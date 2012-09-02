@@ -31,46 +31,46 @@ in plain or in debug mode. The difference is that for debug mode the command is
 followed by single plus ('+') sign. The '+' must be the very last argument on
 the command line.
 
-   $ epil       # Plain mode
-   :
+    $ epil       # Plain mode
+    :
 
-   $ epil +     # Debug mode
-   :
+    $ epil +     # Debug mode
+    :
 
 In both cases, the colon ':' is PicoLisp's prompt. You may enter some Lisp
 expression,
 
-   : (+ 1 2 3)
-   -> 6
+    : (+ 1 2 3)
+    -> 6
 
 To exit the interpreter, enter
 
-   : (bye)
+    : (bye)
 
 or just type Ctrl-D.
 
 
 For a local invocation, specify a path name, e.g.
+    
+    $ ./epil     # Plain mode
+    :
 
-   $ ./epil     # Plain mode
-   :
-
-   $ ./epil +   # Debug mode
-   :
+    $ ./epil +   # Debug mode
+    :
 
 or
 
-   $ /home/app/epil  # Invoking a local installation from some other directory
+    $ /home/app/epil  # Invoking a local installation from some other directory
 
 
-A shortcut for debug mode is the 'dbg' script:
+A shortcut for debug mode is the 'edbg' script:
 
-   $ ./dbg
-   :
+    $ ./edbg
+    :
 
 It is available only for local installaions, and is eqivalent to
 
-   $ ./epil +
+    $ ./epil +
 
 Note that 'epil' can also serve as a template for your own stand-alone scripts.
 
