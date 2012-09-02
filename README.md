@@ -26,7 +26,7 @@ directories in the global PicoLisp installation (as root).
 
 ## Invocation ##
 
-In a global installation, the 'pil' command should be used. You can either start
+In a global installation, the 'epil' command should be used. You can either start
 in plain or in debug mode. The difference is that for debug mode the command is
 followed by single plus ('+') sign. The '+' must be the very last argument on
 the command line.
