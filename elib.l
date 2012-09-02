@@ -449,7 +449,7 @@
 
 ### Debug ###
 `*Dbg
-(load "@lib/debug.l" "@lib/led.l" "@lib/edit.l" "@lib/lint.l")
+(load "@lib/debug.l" "@lib/eled.l" "@lib/eedit.l" "@lib/lint.l")
 (noLint 'later (loc "@Prg" later))
 
 # vi:et:ts=3:sw=3
