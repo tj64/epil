@@ -1,0 +1,24 @@
+* TODO Version 1.1
+  [2012-09-02 So 05:33]
+
+** TODO announce new version in mailing-list
+  [2012-09-02 So 05:33]
+** TODO change version number picolisp-wiki-mode.el
+  [2012-09-02 So 05:33]
+** TODO replace download on github
+  [2012-09-02 So 05:33]
+
+
+* NEXT Version 1.0
+  [2012-09-02 So 05:33]
+
+** TODO ask Alex to include files in distribution
+   [2012-09-02 So 05:34]
+** TODO announce new version in mailing-list
+  [2012-09-02 So 05:33]
+** TODO change version number   
+  [2012-09-02 So 05:33]
+** TODO put download on github
+  [2012-09-02 So 05:33]
+
+
