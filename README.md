@@ -47,7 +47,7 @@ To exit the interpreter, enter
 
     : (bye)
 
-or just type Ctrl-D.
+or just type Ctrl-Q.
 
 
 For a local invocation, specify a path name, e.g.
