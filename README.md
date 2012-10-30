@@ -144,7 +144,7 @@ meaning:
     entered partially and TAB is pressed subsequently, all internal symbols
     (and/or path names in the file system) matching the partial input are shown
     in sequence. **TODO**
-  * ESC <key> sequence can be used instead of M-<key> (ALT-<key>).
+  * ESC-key sequence can be used instead of M-key (ALT-key).
 
 Conclusion
 
