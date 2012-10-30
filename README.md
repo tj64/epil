@@ -115,7 +115,7 @@ left parenthesis.
   * [C-M-f (ESC^s) or C-M-b (ESC^r) - Go to matching parenthesis] **TODO**
   * M-c (ESC-c) or M-l (ESC-l) -
      Convert character to opposite (lower or upper) case and move right
-  * u - Undo the last change (one level only)
+  * C-x u (^x u) or C-_ (^_) - Undo the last change (one level only)
   * [U - Undo all changes of the current line] **TODO**
   * C-y (^y) - Display current contents of cut buffer **[???]**
 
