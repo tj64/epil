@@ -1,4 +1,4 @@
-o#{
+#{
 
 Copyright: Axel Svensson <svenssonaxel@gmail.com>
 Licence: See the COPYING file distributed with picolisp 
