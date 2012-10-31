@@ -1,0 +1,206 @@
+#+TITLE: Emacs-style PicoLisp Editing - Reference Card
+#+AUTHOR: Thorsten Joltiz
+#+DATE: <2012-10-31 Mi>
+
+* Tabular overview of keybindings used by *epil*
+
+** Starting PicoLisp with *epil*
+
+| action   | comment                        |
+|----------+--------------------------------|
+|          | <30>                           |
+| $ epil   | '$' is the shell prompt        |
+| $ epil + | debug mode                     |
+
+
+** Files and Directories (/PicoLisp/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+
+** Getting Help
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Error Recovery
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+
+** (Incremental) Search
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+
+
+** Motion
+
+| entitiy      | backward | forward | comment                        |
+|--------------+----------+---------+--------------------------------|
+|              |          |         | <30>                           |
+| character    | C-b      | C-f     |                                |
+| word         | M-b      | M-f     | vi-semantics, goes to beginning of next/last word |
+| line up/down | C-p      | C-n     | previous or next line in history |
+| line beg/end | C-a      | C-e     | beginning or end of line       |
+| sexp         | C-M-b    | C-M-f   | beginning or end of sexp TODO  |
+
+** Killing and Deleting
+
+| entitiy          | backward    | forward | comment                        |
+|------------------+-------------+---------+--------------------------------|
+|                  |             |         | <30>                           |
+| character        | BACKSPACE   | C-d     |                                |
+| word             | M-BACKSPACE | M-d     |                                |
+| line (to end of) |             | C-k     |                                |
+
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+| yank    | C-y    | yanks last killed thing        |
+
+** Marking
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Query Replace
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+** Case Change
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+** The Command Line (aka The Minibuffer) 
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Query Replace
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Transposing
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Tags
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Shells
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Registers
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Commands Dealing with PicoLisp
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+
+* Emacs Remote Control (from the PicoLisp command Line)
+
+** Files and Directories (/Emacs Remote Control/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Buffers (/Emacs Remote Control/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** Org-mode (/Emacs Remote Control/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** GNUS (/Emacs Remote Control/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+** W3M (/Emacs Remote Control/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+** IRC (/Emacs Remote Control/)
+
+| entitiy | action | comment                        |
+|---------+--------+--------------------------------|
+|         |        | <30>                           |
+|         |        |                                |
+
+
+

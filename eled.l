@@ -322,10 +322,10 @@
          ## ("g" (prinl) (println "Clip"))
          ("^v" (prinl) (println "Clip"))
          ("^e" (eMove))
-         ## ("%"
-         ## (case (get "Line" "LPos") ## (")" (lPar))
-         ## ("(" (rPar))
-         ## (T (beep)) ) )
+         ("^%"
+            (case (get "Line" "LPos") ## (")" (lPar))
+            ("(" (rPar))
+            (T (beep)) ) )
          ## ("/"
          ## (let "L" "Line"
          ## (_getLine '("/") '((C) (= C "/")))
