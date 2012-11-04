@@ -311,6 +311,15 @@
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
                            (beep)
                            (chgLine "Line" (+ "C" "LPos")) ) )
+                     ("^s"
+                        (let "L" "Line"
+                           (_getLine '("/") '((C) (= C "/")))
+                           (unless (=T "Line")
+                              (setq "Item" (append '(@) (cdr "Line") '(@)))
+                              (ledSearch "L")
+                              ## (off "Insert")
+                              ) ) )
+
                      ("s" (ledSearch "Line"))
                      ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) )
 
@@ -325,14 +334,6 @@
                   (setq "UndoLine" "L" "UndoPos" "P") ) )
          ("^v" (prinl) (println "Clip"))
          ("^e" (eMove))
-         ("^w"  
-            (let "L" "Line"
-               (_getLine '("/") '((C) (= C "/")))
-               (unless (=T "Line")
-                  (setq "Item" (append '(@) (cdr "Line") '(@)))
-                  (ledSearch "L")
-                  ## (off "Insert")
-                  ) ) )
          ("^a" (bMove))
          ("^k" (doUndo) (clrEol))
          ("^b" (lMove))
