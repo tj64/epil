@@ -275,7 +275,7 @@
       (expandTab)
       (off "Complete")
       (case "C"
-         ("^?"  # ("^H" "^?")
+         (("^H" "^?")
             (when (> "LPos" 1)
                (chgLine (remove (dec "LPos") "Line") (dec "LPos")) ) )
          ## ("^V" (insChar (key)))
@@ -331,7 +331,7 @@
                      # in history-search
                      ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) )
          # 'C-x' (Ctrl-x) keymap 
-         ("^x" (and (key 500)
+         ("^X" (and (key 500)
                   (case @
                      # undo 
                      ("u"
@@ -339,10 +339,10 @@
                            (chgLine "UndoLine" "UndoPos")
                            (setq "UndoLine" "L" "UndoPos" "P") ) ) ) ) )
          # 'C-h' (Ctrl-h) keymap (help functionality)
-         ("^h" (and (key 500)
-                  (case @
-                     # display current contents of kill-ring (cut buffer)
-                     ("r" (prinl) (println "Clip")) ) ) )
+         ## ("^h" (and (key 500)
+         ##          (case @
+         ##             # display current contents of kill-ring (cut buffer)
+         ##             ("r" (prinl) (println "Clip")) ) ) )
          # undo 
          ("^_" (let ("L" "Line" "P" "LPos")
                   (chgLine "UndoLine" "UndoPos")
