@@ -17,6 +17,7 @@
    "Clip" NIL # Cut/Copy/Paste buffer
    "Item" NIL # Item to find
    "Found" NIL # Find stack
+   "Mark" NIL # Position of mark
    "Complete" NIL # Input completion
 
    "HistMax" 1000 # History limit
@@ -274,43 +275,47 @@
       (expandTab)
       (off "Complete")
       (case "C"
-         (("^H" "^?")
+         ("^?"  # ("^H" "^?")
             (when (> "LPos" 1)
                (chgLine (remove (dec "LPos") "Line") (dec "LPos")) ) )
-         ("^V" (insChar (key)))
+         ## ("^V" (insChar (key)))
+
+         # 'M-<char>' (Meta or Alt) keymap, implemented with ESC prefix
          ("^[" (and (key 500)
                   (case @
+                     # forward-word
+                     # TODO: emacs semantics (goto end of word!)
                      ("f" (rWord))
+                     # backward-word
                      ("b" (lWord))
+                     # kill-word
                      ("d" (doUndo) (delWord T))
-                     ("c"
+                     # toggle case of char
+                     # TODO: capitalize/downcase/upcase word
+                     ((or "c" "l")
                         (doUndo)
                         (rplChar
                              ((if
                                  (low? (setq "C" (get "Line" "LPos")))
                                  uppc lowc ) "C" ) )
                         (rMove) )
-                     ("l"
-                        (doUndo)
-                        (rplChar
-                             ((if
-                                 (low? (setq "C" (get "Line" "LPos")))
-                                 uppc lowc ) "C" ) )
-                        (rMove) )
+                     # forward-sexp
                      ("^f"
                       (case (get "Line" "LPos") 
                          ("(" (rPar))
                          (T (beep)) ) )
+                     # backward-sexp
                      ("^b"
                       (case (get "Line" "LPos") 
                          (")" (lPar))
                          (T (beep)) ) )
 
-                     # goto/find  
+                     # goto/find char  
                      ("g" 
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
                            (beep)
                            (chgLine "Line" (+ "C" "LPos")) ) )
+                     # accept input pattern for history search
                      ("^s"
                         (let "L" "Line"
                            (_getLine '("/") '((C) (= C "/")))
@@ -319,20 +324,30 @@
                               (ledSearch "L")
                               ## (off "Insert")
                               ) ) )
-
+                     # search for next occurrence of pattern
+                     # in history-search
                      ("s" (ledSearch "Line"))
+                     # search for previous occurrence of pattern
+                     # in history-search
                      ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) )
-
-         ("^X" (and (key 500)
+         # 'C-x' (Ctrl-x) keymap 
+         ("^x" (and (key 500)
                   (case @
+                     # undo 
                      ("u"
                         (let ("L" "Line" "P" "LPos")
                            (chgLine "UndoLine" "UndoPos")
                            (setq "UndoLine" "L" "UndoPos" "P") ) ) ) ) )
+         # 'C-h' (Ctrl-h) keymap (help functionality)
+         ("^h" (and (key 500)
+                  (case @
+                     # display current contents of kill-ring (cut buffer)
+                     ("r" (prinl) (println "Clip")) ) ) )
+         # undo 
          ("^_" (let ("L" "Line" "P" "LPos")
                   (chgLine "UndoLine" "UndoPos")
                   (setq "UndoLine" "L" "UndoPos" "P") ) )
-         ("^v" (prinl) (println "Clip"))
+         # 
          ("^e" (eMove))
          ("^a" (bMove))
          ("^k" (doUndo) (clrEol))
