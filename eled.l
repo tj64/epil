@@ -333,10 +333,10 @@
                      ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) ) 
 
          # 'C-c' (Ctrl-c) keymap 
-         ("^C" (and (key 500)
-                  (case @
-                     # change directory
-                     ("c" (prinl "Hello World") (quit)) ) ) )
+         ## ("^C" (and (key 500)
+         ##          (case @
+         ##             # change directory
+         ##             ("c" (prinl "Hello World") (quit)) ) ) )
 
          # 'C-u (Ctrl-u) keymap (functions with arguments)
          ("^u" (and (key 1000)
