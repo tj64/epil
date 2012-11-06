@@ -29,6 +29,23 @@
    "Hist0" "History" )
 
 
+# Switch Crtl-C off
+
+# Ctrl-C is actually not defined as a special key, but as a signal
+# handler. Depending on the 'stty' settings, a SIGINT signal is sent to
+# the process when Ctrl-C is pressed.
+#
+# If this is not desired, then some other key (or none) must be set in the
+# terminal settings. This can be done with
+#
+#    $ stty intr ^A
+#
+# or, from inside PicoLisp
+#
+#    (call 'stty "intr" "^A")
+
+(call 'stty "intr" "")
+
 # Basic editing routine
 (de chgLine (L N)
    (let (D (length "Line") Tsm)
@@ -332,11 +349,14 @@
                      # in history-search
                      ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) ) 
 
-         # 'C-c' (Ctrl-c) keymap 
-         ## ("^C" (and (key 500)
-         ##          (case @
-         ##             # change directory
-         ##             ("c" (prinl "Hello World") (quit)) ) ) )
+         # 'C-c' (Ctrl-c) keymap
+         ("^c"  (and (key 500)
+                  (case @
+                     # change directory
+                     ("^d"
+                        (prinl "[(pwd) " (pwd) "]")
+                        (prin "(cd) ")
+                        (cd (read)) (quit) ) ) ) )
 
          # 'C-u (Ctrl-u) keymap (functions with arguments)
          ("^u" (and (key 1000)
@@ -360,7 +380,11 @@
                      # list directory files
                      ("^d" (printsp (dir (pwd))) (prinl) (quit))
                      # change directory
-                     ("d" (cd (read)) (quit)) ) ) )
+                     ## ("d"
+                     ##    (prinl "[(pwd) " (pwd) "]")
+                     ##    (prin "(cd) ")
+                     ##    (cd (read)) (quit) )
+                     ) ) )
          # 'C-v' (Ctrl-v) keymap (info/help functionality)
          ("^V" (and (key 500)
                   (case @
