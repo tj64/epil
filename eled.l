@@ -284,7 +284,7 @@
          ("^[" (and (key 500)
                   (case @
                      # forward-word
-                     # TODO: emacs semantics (goto end of word!)
+                     # TODO: emacs  (goto end of word!)
                      ("f" (rWord))
                      # backward-word
                      ("b" (lWord))
@@ -309,7 +309,8 @@
                       (case (get "Line" "LPos") 
                          (")" (lPar))
                          (T (beep)) ) )
-
+                     # show present working directory (pwd)
+                     ("^d" (prinl (pwd)) (quit))
                      # goto/find char  
                      ("g" 
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
@@ -329,7 +330,25 @@
                      ("s" (ledSearch "Line"))
                      # search for previous occurrence of pattern
                      # in history-search
-                     ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) )
+                     ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) ) 
+
+         # 'C-c' (Ctrl-c) keymap 
+         ("^C" (and (key 500)
+                  (case @
+                     # change directory
+                     ("c" (prinl "Hello World") (quit)) ) ) )
+
+         # 'C-u (Ctrl-u) keymap (functions with arguments)
+         ("^u" (and (key 1000)
+                 (case @
+                    # list directory files
+                    # (including those starting with .)
+                     ("^x" (and (key 500)
+                              (case @
+                                 ("^d"
+                                  (printsp (dir (pwd) T))
+                                  (prinl) (quit) ) ) ) ) ) ) )
+
          # 'C-x' (Ctrl-x) keymap 
          ("^X" (and (key 500)
                   (case @
@@ -337,12 +356,17 @@
                      ("u"
                         (let ("L" "Line" "P" "LPos")
                            (chgLine "UndoLine" "UndoPos")
-                           (setq "UndoLine" "L" "UndoPos" "P") ) ) ) ) )
-         # 'C-h' (Ctrl-h) keymap (help functionality)
-         ## ("^h" (and (key 500)
-         ##          (case @
-         ##             # display current contents of kill-ring (cut buffer)
-         ##             ("r" (prinl) (println "Clip")) ) ) )
+                           (setq "UndoLine" "L" "UndoPos" "P") ) )
+                     # list directory files
+                     ("^d" (printsp (dir (pwd))) (prinl) (quit))
+                     # change directory
+                     ("d" (cd (read)) (quit)) ) ) )
+         # 'C-v' (Ctrl-v) keymap (info/help functionality)
+         ("^V" (and (key 500)
+                  (case @
+                     # display current contents of
+                     # kill-ring (cut buffer)
+                    ("r" (prinl) (println "Clip")) ) ) )
          # undo 
          ("^_" (let ("L" "Line" "P" "LPos")
                   (chgLine "UndoLine" "UndoPos")
