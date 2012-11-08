@@ -18,6 +18,7 @@
    "Item" NIL # Item to find
    "Found" NIL # Find stack
    "Mark" NIL # Position of mark
+   "Register" NIL # (Named) storage for text-snippets 
    "Complete" NIL # Input completion
 
    "HistMax" 1000 # History limit
@@ -44,6 +45,7 @@
 #
 #    (call 'stty "intr" "^A")
 
+(raw T)
 (call 'stty "intr" "")
 
 # Basic editing routine
@@ -356,7 +358,26 @@
                      ("^d"
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(cd) ")
-                        (cd (read)) (quit) ) ) ) )
+                        (cd (read)) (quit) )
+                     # call shell-command with arguments
+                     ("^c"
+                      (prin "[cmd -args] ")
+                      (eval
+                         (append '(call)
+                            (mapcar pack
+                               (split (chop (line T)) " " ) ) ) )
+                      (quit) ) ) ) )
+
+                      ## (use (X Y)
+                      ##    (prinl "[command -args]")
+                      ##    (prinl "(cmd) " (setq X (read)))
+                      ##    (prinl "(args) " (setq Y (read)))
+                      ##    (call X Y) (quit)) )
+                         ## (case @
+                         ##    ((and X Y) (call X Y) (quit))
+                         ##    ((and X (not Y)) (call X) (quit))
+                         ##    (T (prinl "Not a valid command")) ) ) )
+                      ## (call (line T) (line T)) (quit) )
 
          # 'C-u (Ctrl-u) keymap (functions with arguments)
          ("^u" (and (key 1000)
@@ -395,16 +416,25 @@
          ("^_" (let ("L" "Line" "P" "LPos")
                   (chgLine "UndoLine" "UndoPos")
                   (setq "UndoLine" "L" "UndoPos" "P") ) )
-         # 
+         # move-end-of-line
          ("^e" (eMove))
+         # move-beginning-of-line
          ("^a" (bMove))
+         # kill-line
          ("^k" (doUndo) (clrEol))
+         # backward-char
          ("^b" (lMove))
-         ("^n" (unless (=0 "HPos") (setHist (dec "HPos"))))
-         ("^p" (when (< "HPos" (length "History")) (setHist (inc "HPos"))))
+         # forward-char
          ("^f" (and (= "LPos" (length "Line"))(xMove))(rMove))
+         # next-line
+         ("^n" (unless (=0 "HPos") (setHist (dec "HPos"))))
+         # previous-line
+         ("^p" (when (< "HPos" (length "History")) (setHist (inc "HPos"))))
+         # yank
          ("^y" (doUndo) (doPaste))
+         # delete-char
          ("^D" (doUndo) (delChar))
+         # self-insertion
          (T
             (when (= "C" ")")
                (chgLine "Line" (prog1 "LPos" (lPar) (wait 200))) )
