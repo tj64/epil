@@ -368,17 +368,6 @@
                                (split (chop (line T)) " " ) ) ) )
                       (quit) ) ) ) )
 
-                      ## (use (X Y)
-                      ##    (prinl "[command -args]")
-                      ##    (prinl "(cmd) " (setq X (read)))
-                      ##    (prinl "(args) " (setq Y (read)))
-                      ##    (call X Y) (quit)) )
-                         ## (case @
-                         ##    ((and X Y) (call X Y) (quit))
-                         ##    ((and X (not Y)) (call X) (quit))
-                         ##    (T (prinl "Not a valid command")) ) ) )
-                      ## (call (line T) (line T)) (quit) )
-
          # 'C-u (Ctrl-u) keymap (functions with arguments)
          ("^u" (and (key 1000)
                  (case @
