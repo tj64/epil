@@ -359,6 +359,11 @@
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(cd) ")
                         (cd (read)) (quit) )
+                     # make directory (with parents)
+                     ("d"
+                        (prinl "[(pwd) " (pwd) "]")
+                        (prin "(mkdir -p) ")
+                        (call 'mkdir (read) "-p") (quit) )
                      # call shell-command with arguments
                      ("^c"
                       (prin "[cmd -args] ")
@@ -389,12 +394,30 @@
                            (setq "UndoLine" "L" "UndoPos" "P") ) )
                      # list directory files
                      ("^d" (printsp (dir (pwd))) (prinl) (quit))
-                     # change directory
-                     ## ("d"
-                     ##    (prinl "[(pwd) " (pwd) "]")
-                     ##    (prin "(cd) ")
-                     ##    (cd (read)) (quit) )
-                     ) ) )
+                     # find-file (with ZILE)
+                     ("f"
+                      (use X
+                        (prinl "[(pwd) " (pwd) "]")
+                        (prin "(zile) ")
+                        (call 'zile (read)) (quit) ) )
+                     # edit file (with EMACSCLIENT) 
+                     ## ("^f" (edit ) )
+ ) ) )
+                        ## (case @
+                        ##    ((call 'test "-f" X)
+                        ##     (call 'zile X) (quit) )
+                        ##    ((call 'test "-d" X)
+                        ##     (prinl "Can't open directory") (quit) )
+                        ##    (T (case @
+                        ##          ((call 'test "-d" (dirname X))
+                        ##           (chdir (dirname X)
+                        ##              (out (basename X)
+                        ##              (call -zile X) )
+                        ##              (quit) ) )
+                        ##          (T (call 'mkdir (dirname X) "-p")
+                        ##             (chdir (dirname X)
+                        ##                (out (basename X)) ) ) ) ) ) ) ) ) ) )
+
          # 'C-v' (Ctrl-v) keymap (info/help functionality)
          ("^V" (and (key 500)
                   (case @
