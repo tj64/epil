@@ -385,7 +385,7 @@
                                   (prinl) (quit) ) ) ) ) ) ) )
 
          # 'C-x' (Ctrl-x) keymap 
-         ("^X" (and (key 500)
+         ("^x" (and (key 500)
                   (case @
                      # undo 
                      ("u"
@@ -418,12 +418,20 @@
                         ##             (chdir (dirname X)
                         ##                (out (basename X)) ) ) ) ) ) ) ) ) ) )
 
-         # 'C-v' (Ctrl-v) keymap (info/help functionality)
-         ("^V" (and (key 500)
+         # 'C-h' (Ctrl-h) keymap (info/help functionality)
+         ("^h" (and (key 500)
                   (case @
                      # display current contents of
                      # kill-ring (cut buffer)
                     ("r" (prinl) (println "Clip")) ) ) )
+
+         # 'C-v' (Ctrl-v) keymap 
+         ## ("^v" (and (key 500)
+         ##          (case @
+         ##             # display current contents of
+         ##             # kill-ring (cut buffer)
+         ##            ("r" (prinl) (println "Clip")) ) ) )
+
          # undo 
          ("^_" (let ("L" "Line" "P" "LPos")
                   (chgLine "UndoLine" "UndoPos")

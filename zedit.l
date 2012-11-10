@@ -3,49 +3,6 @@
 
 # "*F" "*Lst" "*X" "*K"
 
-#{ 
-
-* Customize Emacs:
-
-** Make Emacs revert the edit-buffers without querying
-(see http://www.gnu.org/software/emacs/manual/html_node/elisp/Reverting.html)
-
-,--------------------------------------------------------------------
-| You can customize how revert-buffer does its work by setting the
-| variables described in the rest of this section. 
-| 
-| — User Option: revert-without-query
-| 
-| This variable holds a list of files that should be reverted without
-| query. The value is a list of regular expressions.
-`--------------------------------------------------------------------
-
-Use a regexp like this, replacing 'my/home/directory/' with the path
-to your home directory:
-
-,-------------------------------
-| my/home/directory/\.pil/tmp/.+
-`-------------------------------
-
-** Make Emacs save the edited buffer on exit without querying
-
-Do not exit with "C-x #" (server-edit) but with "C-u C-x C-c"
-
-,---------------------------------------------------------------------
-| (save-buffers-kill-terminal &optional ARG)
-| 
-| Offer to save each buffer, then kill the current connection.
-| If the current frame has no client, kill Emacs itself.
-| 
-| With prefix ARG, silently save all file-visiting buffers, then kill.
-| 
-| If emacsclient was started with a list of filenames to edit, then
-| only these files will be asked to be saved.
-`---------------------------------------------------------------------
-
-}#
-
-
 (de edit @
    (let *Dbg NIL
       (setq "*F" (tmp '"edit.l"))
@@ -90,16 +47,15 @@ Do not exit with "C-x #" (server-edit) but with "C-u C-x C-c"
             "-s" "emacs1"
             "-a" ""
             "-c"
+            ## "-e" "(load \"~/eled-init.el\")"
             (pack "+" "N")
-            "*F")
-
+            "*F" )
          (apply ==== "*Lst")
          (in "*F"
             (while (and (setq "*X" (read)) (atom "*X"))
                (def "*X" (read))
                (until (= '(********) (setq "*K" (read)))
                   (def "*X" "*K" (read)) ) ) )
-
          (====)
          (NIL "*X" (throw))
          (T (=0 (car "*X")))
