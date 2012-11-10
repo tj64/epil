@@ -29,7 +29,8 @@ to your home directory:
 
 ** Make Emacs save the edited buffer on exit without querying
 
-Do not exit with "C-x #" (server-edit) but with "C-u C-x C-c"
+Do not exit with "C-x #" (server-edit) but with "C-x C-c" or "C-u C-x
+C-c":
 
 ,---------------------------------------------------------------------
 | (save-buffers-kill-terminal &optional ARG)
@@ -51,6 +52,8 @@ Do not exit with "C-x #" (server-edit) but with "C-u C-x C-c"
       (setq "*F" (tmp '"edit.l"))
       (catch NIL
          ("edit" (rest)) ) ) )
+
+"blablablabla"
 
 (de "edit" ("Lst")
    (let "N" 1
@@ -85,8 +88,8 @@ Do not exit with "C-x #" (server-edit) but with "C-u C-x C-c"
          ##    "+map K yw:call setline(line(\"$\"), \"(\" . line(\".\") . \" \" . @@ . \")\")^MZZ"
          ##    "+map Q GC(0)^[ZZ"
          ##    (pack "+" "N")
-         ##    "*F" )
          (call 'emacsclient
+         ##    "*F" )
             "-s" "emacs1"
             "-a" ""
             "-c"
