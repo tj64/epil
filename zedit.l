@@ -43,10 +43,10 @@
          ##    "+map Q GC(0)^[ZZ"
          ##    (pack "+" "N")
          ##    "*F" )
-         (call 'emacsclient
-            "-s" "emacs1"
-            "-a" ""
-            "-c"
+         (call 'zile
+            ## "-s" "emacs1"
+            ## "-a" ""
+            ## "-c"
             ## "-e" "(load \"~/eled-init.el\")"
             (pack "+" "N")
             "*F" )

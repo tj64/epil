@@ -1,4 +1,4 @@
-# 21sep11abu
+# 09jul12abu
 # (c) Software Lab. Alexander Burger
 
 (de task (Key . Prg)
@@ -236,6 +236,9 @@
             (loc S (car X))
             (loc S (cdr X)) ) ) ) )
 
+(de local Lst
+   (mapc zap Lst) )
+
 (de import Lst
    (for Sym Lst
       (unless (== Sym (intern Sym))
@@ -251,8 +254,8 @@
                (cons (car L) (recurse (cdr L))) ) ) ) ) )
 
 (de object ("Sym" "Val" . @)
-   (def "Sym" "Val")
    (putl "Sym")
+   (def "Sym" "Val")
    (while (args)
       (put "Sym" (next) (next)) )
    "Sym" )
@@ -262,14 +265,18 @@
 
 # Class variables
 (de var X
-   (put *Class (car X) (cdr X)) )
+   (if (pair (car X))
+      (put (cdar X) (caar X) (cdr X))
+      (put *Class (car X) (cdr X)) ) )
 
 (de var: X
    (apply meta X This) )
 
 ### Math ###
-(de scl (N)
-   (setq *Scl N) )
+(de scl ("N" . "Prg")
+   (if "Prg"
+      (let *Scl "N" (run "Prg"))
+      (setq *Scl "N") ) )
 
 (de sqrt (N F)
    (cond
@@ -307,7 +314,7 @@
 ### Pretty Printing ###
 (de *PP
    T NIL if ifn when unless while until do case state for
-   with catch finally co ! setq default push job use let let?
+   with catch finally co ! setq default push bind job use let let?
    prog1 later recur redef =: in out ctl tab new )
 (de *PP1 let let? for redef)
 (de *PP2 setq default)
@@ -447,6 +454,11 @@
          (msg Prg)
          (quit "'test' failed" Pat) ) ) )
 
+## ### Debug ###
+## `*Dbg
+## (load "@lib/debug.l" "@lib/led.l" "@lib/edit.l" "@lib/lint.l")
+## (noLint 'later (loc "@Prg" later))
+
 ### Debug ###
 `*Dbg
 (load "@lib/debug.l"  "@lib/lint.l")
@@ -458,5 +470,6 @@
 ##    (load "@lib/eled.l" "@lib/eedit.l")
 ##    (load "@lib/led.l" "@lib/edit.l") )
 (noLint 'later (loc "@Prg" later))
+
 
 # vi:et:ts=3:sw=3
