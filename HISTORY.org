@@ -1,6 +1,16 @@
 * TODO Version 1.1
   [2012-09-02 So 05:33]
 
+** TODO imrpove 'em' function
+   [2012-11-11 So 13:43]
+*** TODO use slime/swank for editing bugger (ask Tomas!)
+   [2012-11-11 So 13:43]
+** TODO implement new Emacs editing functionality in PicoLisp
+   [2012-11-11 So 13:39]
+*** TODO query-replace functionality
+    [2012-11-11 So 13:40]
+*** TODO better undo function
+   [2012-11-11 So 13:39]
 ** TODO announce new version in mailing-list
   [2012-09-02 So 05:33]
 ** TODO change version number picolisp-wiki-mode.el
@@ -9,10 +19,79 @@
   [2012-09-02 So 05:33]
 
 
-* NEXT Version 1.0
+* TODO Version 1.0
   [2012-09-02 So 05:33]
 
-** TODO ask Alex to include files in distribution
+** TODO write series of articles "PicoLisp goes Emacs"
+   [2012-11-11 So 13:47]
+** NEXT write cheat-sheet for Emacs command-line
+   [2012-11-11 So 13:46]
+** TODO how to create (emacs) tag file for living system?
+   [2012-11-11 So 13:41]
+** TODO how to convert ctags to etags/exuberant ctags?
+   [2012-11-11 So 13:40]
+** TODO write 'em' and 'zi' functions (replacing 'vi')
+   [2012-11-11 So 11:07]
+*** use 'inferior-picolisp' for editing buffer
+   [2012-11-11 So 13:42]
+** TODO implement K and Q functions for Zile
+   [2012-11-11 So 11:06]
+** TODO make 'edit' work with Zile
+   [2012-11-11 So 11:05]
+** DONE implement K and Q functions in Emacs Lisp
+   CLOSED: [2012-11-11 So 11:05]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-11 So 11:05]
+   :END:
+   [2012-11-11 So 10:57]
+** NEXT make 'edit' work with Emacsclient
+   [2012-11-11 So 10:55]
+*** TODO use linenumber to position point in Emacsclient call
+    [2012-11-11 So 10:59]
+*** TODO make Emacsclient call more generic
+   [2012-11-11 So 10:58]
+** TODO make C-h prefix available for redefinition (help prefix)
+   [2012-11-11 So 11:11]
+   (see JED homepage)
+** DONE Emacs key-bindings for existing Vi editing/navigation functions
+   CLOSED: [2012-11-11 So 10:55]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-11 So 10:55]
+   :END:
+   [2012-11-11 So 10:53]
+** NEXT implement new Emacs editing functionality in PicoLisp
+   [2012-11-11 So 08:19]
+*** TODO edebug keybindings for PicoLisp debugger
+    [2012-11-11 So 13:54]
+*** TODO help and info funcionality (keybindings for PicoLisp functions)
+    [2012-11-11 So 13:53]
+*** DONE directory editing (keybindings for PicoLisp functions)
+    CLOSED: [2012-11-11 So 13:45]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2012-11-11 So 13:45]
+    :END:
+    [2012-11-11 So 13:45]
+*** DONE execute shell commands
+    CLOSED: [2012-11-11 So 13:45]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2012-11-11 So 13:45]
+    :END:
+    [2012-11-11 So 13:38]
+*** TODO file handling (keybindings for PicoLisp functions)
+    [2012-11-11 So 13:36]
+*** TODO keybindings for K and Q functions
+    [2012-11-11 So 13:36]
+*** TODO use C-q for (C-u C-x C-c)
+    [2012-11-11 So 11:39]
+*** TODO more case change functionality
+    [2012-11-11 So 11:39]
+*** TODO transpose
+    [2012-11-11 So 11:38]
+*** TODO register
+    [2012-11-11 So 11:11]
+*** TODO set mark and act on region
+   [2012-11-11 So 11:09]
+** TODO ask Alex how to integrate epil in the distribution
    [2012-09-02 So 05:34]
 ** TODO announce new version in mailing-list
   [2012-09-02 So 05:33]
