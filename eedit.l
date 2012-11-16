@@ -5,6 +5,27 @@
 
 #{ 
 
+* Emacs Server
+
+** Start the Emacs server you want to use for PicoLisp editing with
+server-name 'server', only then it will be automatically recognized by
+the calls to emacsclient. Example shellscript 'emacsd' for starting
+emacs as daemon (make it executable):
+
+ ,------------------------------------------------
+ | -rwxr-xr-x 1 me users   83 12. Nov 12:27 emacsd
+ `------------------------------------------------
+
+,-----------------------------------------------
+| #!/bin/sh
+| 
+| exec emacs --daemon=server  -l  ~/my/home/emacs/init.el
+`-----------------------------------------------
+
+If there is no Emacs server running, or none with server-name
+'server', the call to emacsclient will start a new server and open an
+emacsclient for this server.
+
 * Customize Emacs:
 
 ** Make Emacs revert the edit-buffers without querying
@@ -53,8 +74,6 @@ C-c":
       (catch NIL
          ("edit" (rest)) ) ) )
 
-"blablablabla"
-
 (de "edit" ("Lst")
    (let "N" 1
       (loop
@@ -83,14 +102,7 @@ C-c":
                      (prinl)
                      (println '(********))
                      (prinl) ) ) ) )
-         ## (call 'vim
-         ##    "+set isk=33-34,36-38,42-90,92,94-95,97-125"
-         ##    "+map K yw:call setline(line(\"$\"), \"(\" . line(\".\") . \" \" . @@ . \")\")^MZZ"
-         ##    "+map Q GC(0)^[ZZ"
-         ##    (pack "+" "N")
          (call 'emacsclient
-         ##    "*F" )
-            "-s" "emacs1"
             "-a" ""
             "-c"
             (pack "+" "N")

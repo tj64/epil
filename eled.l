@@ -153,6 +153,18 @@
                (T (and (delim? (car L)) (not (delim? (cadr L))))
                   N ) ) ) ) ) )
 
+(de vi-rWord ()
+   (use (M N L)
+      (setq M (length "Line"))
+      (chgLine "Line"
+         (if (<= M (setq N "LPos"))
+            M
+            (loop
+               (T (= M (inc 'N)) M)
+               (setq L (nth "Line" (dec N)))
+               (T (and (delim? (car L)) (not (delim? (cadr L))))
+                  N ) ) ) ) ) )
+
 # Match left parenthesis
 (de lPar ()
    (let (N 1 I (dec "LPos"))
@@ -352,7 +364,7 @@
                      ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) ) 
 
          # 'C-c' (Ctrl-c) keymap
-         ("^c"  (and (key 500)
+         ("^c"  (and (key 1000)
                   (case @
                      # change directory
                      ("^d"
@@ -360,12 +372,12 @@
                         (prin "(cd) ")
                         (cd (read)) (quit) )
                      # make directory (with parents)
-                     ("d"
+                     ("+"
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(mkdir -p) ")
                         (call 'mkdir (read) "-p") (quit) )
                      # call shell-command with arguments
-                     ("^c"
+                     (("^c" "!")
                       (prin "[cmd -args] ")
                       (eval
                          (append '(call)
