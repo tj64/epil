@@ -449,11 +449,11 @@
 
 ### Debug ###
 `*Dbg
-(load "@lib/debug.l"  "@lib/lint.l")
+(load "@lib/lint.l")
 (case *Editor
-   ("Emacs" (load "@lib/eled.l" "@lib/eedit.l"))
-   ("Zile" (load "@lib/eled.l" "@lib/zedit.l"))
-   (T (load "@lib/led.l" "@lib/edit.l") ) )
+   ("Emacs" (load "@lib/edebug.l" "@lib/eled.l" "@lib/eedit.l"))
+   ("Zile" (load "@lib/edebug.l" "@lib/eled.l" "@lib/zedit.l"))
+   (T (load "@lib/debug.l" "@lib/led.l" "@lib/edit.l") ) )
 ## (if *Emacs
 ##    (load "@lib/eled.l" "@lib/eedit.l")
 ##    (load "@lib/led.l" "@lib/edit.l") )

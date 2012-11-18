@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ${0%/*}/bin/picolisp @setzile.l ${0%/*}/elib.l @ext.l "$@"
