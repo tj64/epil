@@ -1,4 +1,4 @@
-# 17nov12abu
+# 14jul12abu
 # (c) Software Lab. Alexander Burger
 
 # Prompt
@@ -39,6 +39,20 @@
          (T (atom "M") (prinl))
          (T (line) T)
          ("Fun" (pop '"M")) ) ) )
+
+(de depth (Idx)  #> (max . average)
+   (let (C 0  D 0  N 0)
+      (cons
+         (recur (Idx N)
+            (ifn Idx
+               0
+               (inc 'C)
+               (inc 'D (inc 'N))
+               (inc
+                  (max
+                     (recurse (cadr Idx) N)
+                     (recurse (cddr Idx) N) ) ) ) )
+         (or (=0 C) (*/ D C)) ) ) )
 
 (de what (S)
    (let *Dbg NIL
@@ -157,35 +171,15 @@
          "*Vi" )
       (out (tmp "tags")
          (let D (pack (pwd) "/")
-            (for Lst
-               (group  # (file (line . sym) (line . sym) ..)
-                  (extract
-                     '((This)
-                        (when (: *Dbg)
-                           (cons (path (cdar @)) (caar @) This) ) )
-                     (all) ) )
-               (let Tags
-                  (in (car Lst)
-                     (let (Line 1  Ofs 0)
-                        (mapcar
-                           '((X)
-                              (do (- (car X) Line)
-                                 (inc 'Ofs (inc (size (line T)))) )
-                              (pack
-                                 `(pack "^J" (char 127))
-                                 (cdr X)
-                                 (char 1)
-                                 (setq Line (car X))
-                                 ","
-                                 Ofs ) )
-                           (sort (cdr Lst)) ) ) )
+            (for This (sort (all))
+               (let? P (path (: *Dbg 1 -1))
                   (prinl
-                     "^L^J"
-                     (unless (= `(char "/") (char (car Lst))) D)
-                     (car Lst)
-                     ","
-                     (sum size Tags)
-                     Tags ) ) ) ) )
+                     This
+                     "^I"
+                     (unless (= `(char "/") (char P)) D)
+                     P
+                     "^I"
+                     (: *Dbg 1 1) ) ) ) ) )
       (call 'vim
          (pack "+set tags=" (tmp "tags") ",./tags")
          "+set isk=33-34,36-38,42-90,92,94-95,97-125"
@@ -236,7 +230,9 @@
 
 
 (de ld ()
-   (and "*Vi" (load (cdr "*Vi"))) )
+   (if "*Em"
+      (load (cdr "*Em"))
+      (and "*Vi" (load (cdr "*Vi"))) ) )
 
 # Single-Stepping
 (de _dbg (Lst)
