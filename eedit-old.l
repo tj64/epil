@@ -1,4 +1,4 @@
-# 12nov12abu
+# 28jul11abu
 # (c) Software Lab. Alexander Burger
 
 # "*F" "*Lst" "*X" "*K"
@@ -106,13 +106,15 @@ C-c":
             "-a" ""
             "-c"
             (pack "+" "N")
-            "*F" )
+            "*F")
+
          (apply ==== "*Lst")
          (in "*F"
             (while (and (setq "*X" (read)) (atom "*X"))
                (def "*X" (read))
                (until (= '(********) (setq "*K" (read)))
                   (def "*X" "*K" (read)) ) ) )
+
          (====)
          (NIL "*X" (throw))
          (T (=0 (car "*X")))
@@ -128,3 +130,6 @@ C-c":
          (push '"Lst" "X")
          ("loc" (car "X") "Lst")
          ("loc" (cdr "X") "Lst") ) ) )
+
+(0)
+(0)
