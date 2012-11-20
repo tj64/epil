@@ -1,12 +1,9 @@
-# 19nov12tj
+# 01septtj
 # Authors Alexander Burger, Thorsten Jolitz
 # (c) Software Lab. Alexander Burger
 
 # Line editor
 # emacs-mode
-
-(mapc undef
-   '(*Led fkey revise) )
 
 (setq
    "Line" NIL # Holds current input line
@@ -21,7 +18,7 @@
    "Item" NIL # Item to find
    "Found" NIL # Find stack
    "Mark" NIL # Position of mark
-   "Register" NIL # (Named) storage for text-snippets
+   "Register" NIL # (Named) storage for text-snippets 
    "Complete" NIL # Input completion
 
    "HistMax" 1000 # History limit
@@ -59,20 +56,20 @@
             (and
                *Tsm
                (= "\"" (get "Line" P))
-               (skipQ "LPos" P "Line") )
+               ("skipQ" "LPos" P "Line") )
             (prin "^H") ) )
       (for (P . C) (setq "Line" L) # Output new line
          (cond
             ((> " " C)
                (dec 'D)
                (prin "_") )
-            ((or (not *Tsm) (<> "\"" C) (escQ P L))
+            ((or (not *Tsm) (<> "\"" C) ("escQ" P L))
                (dec 'D)
                (prin C) )
             (T
                (prin
                   (and Tsm (cdr *Tsm))
-                  (unless (skipQ N P L)
+                  (unless ("skipQ" N P L)
                      (dec 'D)
                      C )
                   (and (onOff Tsm) (car *Tsm)) ) ) ) )
@@ -85,21 +82,21 @@
             (and
                *Tsm
                (= "\"" (get "Line" "LPos"))
-               (skipQ N "LPos" "Line") )
+               ("skipQ" N "LPos" "Line") )
             (prin "^H") )
          (dec '"LPos") ) )
    (flush) )
 
 # Skipped double quote
-(de skipQ (N P L)
+(de "skipQ" (N P L)
    (nor
       (>= (inc N) P (dec N))
       (= "\"" (get L (dec P)))
       (= "\"" (get L (inc P)))
-      (escQ P L) ) )
+      ("escQ" P L) ) )
 
 # Escaped double quote
-(de escQ ()
+(de "escQ" ()
    (let Esc NIL
       (for I (dec P)
          ((if (= "\\" (get L I)) onOff off) Esc) ) ) )
@@ -335,18 +332,18 @@
                         (rMove) )
                      # forward-sexp
                      ("^f"
-                      (case (get "Line" "LPos")
+                      (case (get "Line" "LPos") 
                          ("(" (rPar))
                          (T (beep)) ) )
                      # backward-sexp
                      ("^b"
-                      (case (get "Line" "LPos")
+                      (case (get "Line" "LPos") 
                          (")" (lPar))
                          (T (beep)) ) )
                      # show present working directory (pwd)
                      ("^d" (prinl (pwd)) (quit))
-                     # goto/find char
-                     ("g"
+                     # goto/find char  
+                     ("g" 
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
                            (beep)
                            (chgLine "Line" (+ "C" "LPos")) ) )
@@ -364,7 +361,7 @@
                      ("s" (ledSearch "Line"))
                      # search for previous occurrence of pattern
                      # in history-search
-                     ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) )
+                     ("r" (if "Found" (setHist (pop '"Found")) (beep))) ) ) ) 
 
          # 'C-c' (Ctrl-c) keymap
          ("^c"  (and (key 1000)
@@ -399,10 +396,10 @@
                                   (printsp (dir (pwd) T))
                                   (prinl) (quit) ) ) ) ) ) ) )
 
-         # 'C-x' (Ctrl-x) keymap
+         # 'C-x' (Ctrl-x) keymap 
          ("^x" (and (key 500)
                   (case @
-                     # undo
+                     # undo 
                      ("u"
                         (let ("L" "Line" "P" "LPos")
                            (chgLine "UndoLine" "UndoPos")
@@ -415,7 +412,7 @@
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(zile) ")
                         (call 'zile (read)) (quit) ) )
-                     # edit file (with EMACSCLIENT)
+                     # edit file (with EMACSCLIENT) 
                      ## ("^f" (edit ) )
  ) ) )
                         ## (case @
@@ -440,14 +437,14 @@
                      # kill-ring (cut buffer)
                     ("r" (prinl) (println "Clip")) ) ) )
 
-         # 'C-v' (Ctrl-v) keymap
+         # 'C-v' (Ctrl-v) keymap 
          ## ("^v" (and (key 500)
          ##          (case @
          ##             # display current contents of
          ##             # kill-ring (cut buffer)
          ##            ("r" (prinl) (println "Clip")) ) ) )
 
-         # undo
+         # undo 
          ("^_" (let ("L" "Line" "P" "LPos")
                   (chgLine "UndoLine" "UndoPos")
                   (setq "UndoLine" "L" "UndoPos" "P") ) )
@@ -611,6 +608,7 @@
          (and (nth "History" "HistMax") (con @))
          L ) ) )
 
+
 ### new Key codes (additional to lib/term.l) ###
 ## (setq
 ## *XtMf (in '("tput" "\033") (line T))
@@ -620,11 +618,3 @@
 ## (fkey *XtMf (rWord))
 ## (fkey *XtMb (lWord))
 ## (fkey *XtMd (doUndo) (delWord T))
-
-(mapc zap
-   (quote
-      chgLine skipQ escQ delim? lMove bMove rMove eMove xMove lWord rWord lPar rPar
-      clrEol insChar del1 delChar delWord rplChar doUndo doPaste
-      setHist ledSearch expandTab insMode _getLine _led saveHistory ) )
-
-# vi:et:ts=3:sw=3
