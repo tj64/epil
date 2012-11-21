@@ -206,7 +206,7 @@
       L
       (setq "Clip" (append "Clip" (list (get L "LPos"))))
       (remove "LPos" L) ) )
-
+ 
 # Delete a char
 (de delChar ()
    (use L

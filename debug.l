@@ -9,6 +9,12 @@
 # Browsing
 (de doc (Sym Browser)
    (call (or Browser (sys "BROWSER") 'w3m)
+      ("doc-file" Sym) ) ) 
+
+## (de edoc (Sym)
+##    (let S (or Sym
+
+(de "doc-file" (Sym)
       (pack
          "file:"
          (and (= `(char '/) (char (path "@"))) "//")
@@ -24,7 +30,7 @@
                   ((>= "z" C "a") (setq C (uppc C)))
                   (T (setq C "_")) )
                (pack C ".html#" Sym) )
-            ".html" ) ) ) )
+            ".html" ) ) )
 
 (de more ("M" "Fun")
    (let *Dbg NIL
