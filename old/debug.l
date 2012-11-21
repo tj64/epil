@@ -1,4 +1,4 @@
-# 20nov12abu
+# 19nov12abu
 # (c) Software Lab. Alexander Burger
 
 # Prompt
@@ -145,11 +145,11 @@
             (set @ (read))
             (put Sym '*Dbg (cons (read))) ) ) ) )
 
-(de _ed ("Ed" . "Prg")
+(de _ed ("Led" . "Prg")
    (ifn "X"
       (eval
          (out (pil "editor")
-            (println (cons 'load "Ed")) ) )
+            (println (list 'load "Led")) ) )
       (when (pair "X")
          (setq C (cdr "X")  "X" (car "X")) )
       (when
@@ -193,7 +193,7 @@
 
 (de vi ("X" C)
    (_ed
-      '("@lib/led.l" "@lib/edit.l")
+      "@lib/led.l"
       (call "vim"
          (pack "+set tags=" (tmp "tags") ",./tags")
          "+set isk=33-34,36-38,42-90,92,94-95,97-125"
@@ -202,7 +202,7 @@
 
 (de em ("X" C)
    (_ed
-      '("@lib/eled.l" "@lib/eedit.l")
+      "@lib/eled.l"
       (call "emacsclient"
          "-c"
          (pack "+" (car "*Ed"))

@@ -1,4 +1,4 @@
-# 20nov12abu
+# 18nov12abu
 # (c) Software Lab. Alexander Burger
 
 (de task (Key . Prg)
@@ -456,9 +456,8 @@
 
 ### Debug ###
 `*Dbg
-(if (info (pil "editor"))
-   (load (pil "editor"))
-   (load "@lib/led.l" "@lib/edit.l") )
+(load (if (info (pil "editor")) (pil "editor")
+         "@lib/led.l" "@lib/edit.l" ) )
 (load "@lib/debug.l" "@lib/lint.l")
 (noLint 'later (loc "@Prg" later))
 
