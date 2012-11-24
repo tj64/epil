@@ -128,3 +128,5 @@ C-c":
          (push '"Lst" "X")
          ("loc" (car "X") "Lst")
          ("loc" (cdr "X") "Lst") ) ) )
+
+(82 make)

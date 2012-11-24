@@ -131,16 +131,6 @@
 (de xMove ()
    (chgLine "Line" (inc (length "Line"))) )
 
-# Move up
-(de uMove ()
-   (when (< "HPos" (length "History"))
-      (setHist (inc "HPos")) ) )
-
-# Move down
-(de dMove ()
-   (unless (=0 "HPos")
-      (setHist (dec "HPos")) ) )
-
 # Move word left
 (de lWord ()
    (use (N L)
@@ -216,7 +206,7 @@
       L
       (setq "Clip" (append "Clip" (list (get L "LPos"))))
       (remove "LPos" L) ) )
-
+ 
 # Delete a char
 (de delChar ()
    (use L
@@ -319,6 +309,7 @@
       (expandTab)
       (off "Complete")
       (case "C"
+         ## (("^H" "^?")
          ("^?"
             (when (> "LPos" 1)
                (chgLine (remove (dec "LPos") "Line") (dec "LPos")) ) )
@@ -472,9 +463,9 @@
          # forward-char
          ("^f" (and (= "LPos" (length "Line"))(xMove))(rMove))
          # next-line
-         ("^n" (dMove))
+         ("^n" (unless (=0 "HPos") (setHist (dec "HPos"))))
          # previous-line
-         ("^p" (uMove))
+         ("^p" (when (< "HPos" (length "History")) (setHist (inc "HPos"))))
          # yank
          ("^y" (doUndo) (doPaste))
          # delete-char
@@ -570,13 +561,6 @@
             (cons (cons Key Prg) (delete @ "FKey")) )
          (T (cons (cons Key Prg) "FKey")) ) ) )
 
-(when (sys "TERM")
-   (fkey "^[[A" (uMove))  # Is CSI portable enough?
-   (fkey "^[[B" (dMove))
-   (fkey "^[[C" (rMove))
-   (fkey "^[[D" (lMove)) )
-
- 
 # Main editing functions
 (de _led ("Line1" "tabFun" "skipFun")
    (default "tabFun"
