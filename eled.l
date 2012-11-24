@@ -401,13 +401,16 @@
          # 'C-u (Ctrl-u) keymap (functions with arguments)
          ("^u" (and (key 1000)
                  (case @
-                    # list directory files
-                    # (including those starting with .)
                      ("^x" (and (key 500)
                               (case @
+                                 # list directory files
+                                 # including those starting with .
                                  ("^d"
                                   (printsp (dir (pwd) T))
-                                  (prinl) (quit) ) ) ) ) ) ) )
+                                  (prinl) (quit) )
+                                 # dired-style directory listing (ls -al)
+                                 # including files starting with .
+                                 ("d" (call 'ls "-al") (quit)) ) ) ) ) ) )k
 
          # 'C-x' (Ctrl-x) keymap
          ("^x" (and (key 500)
@@ -419,12 +422,24 @@
                            (setq "UndoLine" "L" "UndoPos" "P") ) )
                      # list directory files
                      ("^d" (printsp (dir (pwd))) (prinl) (quit))
+                     # dired-style directory listing (ls -al)
+                     ("d" (call 'ls "-l") (quit))
                      # find-file (with ZILE)
                      ("f"
                       (use X
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(zile) ")
                         (call 'zile (read)) (quit) ) )
+                     # return (a list with) the number of lines of file(s)
+                     ("l"
+                        (prinl "[(pwd) " (pwd) "]")
+                        (prin "(lines) ")
+                        (println
+                           (mapcar lines
+                              (mapcar pack
+                                 (split (chop (line T)) " ") ) ) )
+                           (quit) )
+
                      # edit file (with EMACSCLIENT)
                      ## ("^f" (edit ) )
  ) ) )
@@ -448,7 +463,17 @@
                   (case @
                      # display current contents of
                      # kill-ring (cut buffer)
-                    ("r" (prinl) (println "Clip")) ) ) )
+                    ("r" (prinl) (println "Clip")(quit))
+                    # file info
+                    ("i" (prin "(info) ")
+                       (let Info (info (any (line T)))
+                          (printsp 
+                             (car Info)
+                             (stamp (cadr Info) (cddr Info)) ) )
+                          (prinl) (quit) )
+                    # show doc for symbol
+                    ("f" (prin "(doc) ")
+                       (doc (line T)) (quit) ) ) ) )
 
          # 'C-v' (Ctrl-v) keymap
          ## ("^v" (and (key 500)
@@ -478,7 +503,9 @@
          # yank
          ("^y" (doUndo) (doPaste))
          # delete-char
-         ("^D" (doUndo) (delChar))
+         ("^d" (doUndo) (delChar))
+         # clear-screen
+         ("^l" (call 'tput 'clear) (quit))
          # self-insertion
          (T
             (when (= "C" ")")
