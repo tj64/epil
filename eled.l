@@ -403,14 +403,17 @@
                  (case @
                      ("^x" (and (key 500)
                               (case @
-                                 # list directory files
-                                 # including those starting with .
+                                 # list directory files with dotfiles
                                  ("^d"
                                   (printsp (dir (pwd) T))
                                   (prinl) (quit) )
-                                 # dired-style directory listing (ls -al)
-                                 # including files starting with .
-                                 ("d" (call 'ls "-al") (quit)) ) ) ) ) ) )k
+                                 # dired-style directory listing with dotfiles
+                                 ("d" (call 'ls "-al") (quit)) ) ) )
+                     ("^h" (and (key 500)
+                              (case @
+                                 # unbug
+                                 ("d" (prin "(unbug) ")
+                                    (unbug (any (line T))) (quit) ) ) ) ) ) ) ) 
 
          # 'C-x' (Ctrl-x) keymap
          ("^x" (and (key 500)
@@ -459,22 +462,36 @@
                         ##                (out (basename X)) ) ) ) ) ) ) ) ) ) )
 
          # 'C-h' (Ctrl-h) keymap (info/help functionality)
-         ("^h" (and (key 500)
+         ("^h" (and (key 1000)
                   (case @
-                     # display current contents of
-                     # kill-ring (cut buffer)
+                    # current contents of kill-ring (cut buffer)
                     ("r" (prinl) (println "Clip")(quit))
-                    # file info
+                    # info
                     ("i" (prin "(info) ")
                        (let Info (info (any (line T)))
                           (printsp 
                              (car Info)
                              (stamp (cadr Info) (cddr Info)) ) )
                           (prinl) (quit) )
-                    # show doc for symbol
+                    # doc 
                     ("f" (prin "(doc) ")
-                       (doc (line T)) (quit) ) ) ) )
-
+                       (doc (line T)) (quit) )
+                    # show
+                    ("s" (prin "(show) ")
+                       (pp (show (any (line T)))) (quit) )
+                    # debug
+                    ("d" (prin "(debug) ")
+                       (debug (any (line T))) (quit) )
+                    # pretty print
+                    ("p" (and (key 500)
+                             (case @
+                                # (pp)
+                                ("p" (prin "(pp) ")
+                                   (pp (any (line T))) (quit) )
+                                # (pretty)
+                                ("r" (prin "(pretty) ")
+                                   (pretty (any (line T)))
+                                   (prinl) (quit) ) ) ) ) ) ) )
          # 'C-v' (Ctrl-v) keymap
          ## ("^v" (and (key 500)
          ##          (case @
