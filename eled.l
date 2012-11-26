@@ -49,7 +49,7 @@
 #    (call 'stty "intr" "^A")
 
 (raw T)
-(call 'stty "intr" "")
+(call 'stty "intr" "^R")
 
 # Basic editing routine
 (de chgLine (L N)
@@ -94,7 +94,7 @@
 (de skipQ (N P L)
    (nor
       (>= (inc N) P (dec N))
-      (= "\""  (get L (dec P)))
+      (= "\"" (get L (dec P)))
       (= "\"" (get L (inc P)))
       (escQ P L) ) )
 
@@ -329,6 +329,14 @@
          # 'M-<char>' (Meta or Alt) keymap, implemented with ESC prefix
          ("^[" (and (key 500)
                   (case @
+                     ("[" (when (sys "TERM")
+                             (and (key 500)
+                                (case @
+                                   # arrow keys
+                                   ("A" (uMove) (xMove))
+                                   ("B" (dMove) (xMove))
+                                   ("C" (rMove T))
+                                   ("D" (lMove)) ) ) ) )
                      # forward-word
                      # TODO: emacs  (goto end of word!)
                      ("f" (rWord))
@@ -531,6 +539,9 @@
                (chgLine "Line" (prog1 "LPos" (lPar) (wait 200))) )
             (insChar  "C") ) ) ) )
 
+#### TODO: delete, once all functionality ####
+#### has been transferred to Insert Mode ####
+
 # Command mode
 ## (de cmdMode ("C")
 ## (case "C"
@@ -616,11 +627,11 @@
             (cons (cons Key Prg) (delete @ "FKey")) )
          (T (cons (cons Key Prg) "FKey")) ) ) )
 
-(when (sys "TERM")
-   (fkey "^[[A" (uMove) (xMove))
-   (fkey "^[[B" (dMove) (xMove))
-   (fkey "^[[C" (rMove T))
-   (fkey "^[[D" (lMove)) )
+## (when (sys "TERM")
+##    (fkey "^[[A" (uMove) (xMove))
+##    (fkey "^[[B" (dMove) (xMove))
+##    (fkey "^[[C" (rMove T))
+##    (fkey "^[[D" (lMove)) )
 
 # Main editing functions
 (de _led ("Line1" "tabFun" "skipFun")
