@@ -49,7 +49,7 @@
 #    (call 'stty "intr" "^A")
 
 (raw T)
-(call 'stty "intr" "^R")
+(call 'stty "intr" "^R")  # ^R as replacement for ^C 
 
 # Basic editing routine
 (de chgLine (L N)
@@ -352,7 +352,7 @@
                              ((if
                                  (low? (setq "C" (get "Line" "LPos")))
                                  uppc lowc ) "C" ) )
-                        (rMove) )
+                        (rMove T) )
                      # forward-sexp
                      ("^f"
                       (case (get "Line" "LPos")
@@ -522,7 +522,7 @@
          # backward-char
          ("^b" (lMove))
          # forward-char
-         ("^f" (and (= "LPos" (length "Line"))(xMove))(rMove))
+         ("^f" (and (= "LPos" (length "Line")))(rMove T))
          # next-line
          ("^n" (dMove))
          # previous-line
@@ -561,7 +561,7 @@
 ## (off "Insert") ) ) )
 ## ("0" (bMove))
 ## ("A" (doUndo) (xMove) (on "Insert"))
-## ("a" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove)) (on "Insert"))
+## ("a" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove T)) (on "Insert"))
 ## ("b" (lWord))
 ## ("c" (doUndo) (delWord NIL) (on "Insert"))
 ## ("C" (doUndo) (clrEol) (xMove) (on "Insert"))
@@ -576,10 +576,10 @@
 ## ("I" (doUndo) (bMove) (on "Insert"))
 ## ("j" (unless (=0 "HPos") (setHist (dec "HPos"))))
 ## ("k" (when (< "HPos" (length "History")) (setHist (inc "HPos"))))
-## ("l" (rMove))
+## ("l" (rMove T))
 ## ("n" (ledSearch "Line"))
 ## ("N" (if "Found" (setHist (pop '"Found")) (beep)))
-## ("p" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove)) (doPaste))
+## ("p" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove T)) (doPaste))
 ## ("P" (doUndo) (doPaste))
 ## ("r" (ifn "Line" (beep) (doUndo) (rplChar (key))))
 ## ("s" (doUndo) (delChar) (on "Insert"))
@@ -596,7 +596,7 @@
 ## (doUndo)
 ## (rplChar
 ## ((if (low? (setq "C" (get "Line" "LPos"))) uppc lowc) "C") )
-## (rMove) )
+## (rMove T) )
 ## (T (beep)) ) )
 
 # Get a line from console
