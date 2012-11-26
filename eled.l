@@ -9,24 +9,24 @@
    '(*Led fkey revise) )
 
 (setq
-   "Line" NIL # Holds current input line
-   "LPos" 1 # Position in line (1 .. length)
-   "HPos" 1 # Position in history
-   "UndoLine" NIL # Undo
-   "UndoPos" 0
-   "Line1" NIL # Initial line
-   "Insert" T # Insert mode flag
-   "FKey" NIL # Function key bindings
-   "Clip" NIL # Cut/Copy/Paste buffer
-   "Item" NIL # Item to find
-   "Found" NIL # Find stack
-   "Mark" NIL # Position of mark
-   "Register" NIL # (Named) storage for text-snippets
-   "Complete" NIL # Input completion
+   "Line"      NIL      # Holds current input line
+   "LPos"      1        # Position in line (1 .. length)
+   "HPos"      1        # Position in history
+   "UndoLine"  NIL      # Undo
+   "UndoPos"   0
+   "Line1"     NIL      # Initial line
+   "Insert"    T        # Insert mode flag
+   "FKey"      NIL      # Function key bindings
+   "Clip"      NIL      # Cut/Copy/Paste buffer
+   "Item"      NIL      # Item to find
+   "Found"     NIL      # Find stack
+   "Complete"  NIL      # Input completion
+   "Mark"      NIL      # Position of the mark
+   "Register"  NIL      # Storage for text snippets
 
-   "HistMax" 1000 # History limit
+   "HistMax"   1000     # History limit
 
-   "History" # History of input lines
+   "History"            # History of input lines
    (in (pack "+" (pil "history"))
       (ctl NIL
          (make (until (eof) (link (line T)))) ) )
@@ -53,15 +53,15 @@
 
 # Basic editing routine
 (de chgLine (L N)
-   (let (D (length "Line") Tsm)
-      (for (P (dec "LPos") (>= P 1) (dec P)) # To start of old line
+   (let (D (length "Line")  Tsm)
+      (for (P (dec "LPos") (>= P 1) (dec P))  # To start of old line
          (unless
             (and
                *Tsm
                (= "\"" (get "Line" P))
                (skipQ "LPos" P "Line") )
             (prin "^H") ) )
-      (for (P . C) (setq "Line" L) # Output new line
+      (for (P . C) (setq "Line" L)  # Output new line
          (cond
             ((> " " C)
                (dec 'D)
@@ -77,10 +77,10 @@
                      C )
                   (and (onOff Tsm) (car *Tsm)) ) ) ) )
       (and Tsm (prin (cdr *Tsm)))
-      (space D) # Clear rest of old line
+      (space D)  # Clear rest of old line
       (do D (prin "^H"))
       (setq "LPos" (inc (length L)))
-      (until (= N "LPos") # To new position
+      (until (= N "LPos")  # To new position
          (unless
             (and
                *Tsm
@@ -94,7 +94,7 @@
 (de skipQ (N P L)
    (nor
       (>= (inc N) P (dec N))
-      (= "\"" (get L (dec P)))
+      (= "\""  (get L (dec P)))
       (= "\"" (get L (inc P)))
       (escQ P L) ) )
 
@@ -117,11 +117,13 @@
    (chgLine "Line" 1) )
 
 # Move right
-(de rMove ()
+(de rMove (F)
    (chgLine "Line"
-      (if (>= "LPos" (length "Line"))
-         "LPos"
-         (inc "LPos") ) ) )
+      (min
+         (inc "LPos")
+         (if F
+            (inc (length "Line"))
+            (length "Line") ) ) ) )
 
 # Move to end of line
 (de eMove ()
@@ -615,18 +617,17 @@
          (T (cons (cons Key Prg) "FKey")) ) ) )
 
 (when (sys "TERM")
-   (fkey "^[[A" (uMove))  # Is CSI portable enough?
-   (fkey "^[[B" (dMove))
-   (fkey "^[[C" (rMove))
+   (fkey "^[[A" (uMove) (xMove))
+   (fkey "^[[B" (dMove) (xMove))
+   (fkey "^[[C" (rMove T))
    (fkey "^[[D" (lMove)) )
 
- 
 # Main editing functions
 (de _led ("Line1" "tabFun" "skipFun")
    (default "tabFun"
       '((S)
          (conc
-            (filter '((X) (pre? S (sym X))) (all))
+            (filter '((X) (pre? S X)) (all))
             (let P (rot (split (chop S) "/"))
                (setq
                   S (pack (car P))
@@ -672,20 +673,10 @@
          (and (nth "History" "HistMax") (con @))
          L ) ) )
 
-### new Key codes (additional to lib/term.l) ###
-## (setq
-## *XtMf (in '("tput" "\033") (line T))
-## *XtMb (in '("tput" "\b") (line T))
-## *XtMd (in '("tput" "\d") (line T)) )
-
-## (fkey *XtMf (rWord))
-## (fkey *XtMb (lWord))
-## (fkey *XtMd (doUndo) (delWord T))
-
 (mapc zap
    (quote
-      chgLine skipQ escQ delim? lMove bMove rMove eMove xMove lWord rWord lPar rPar
-      clrEol insChar del1 delChar delWord rplChar doUndo doPaste
-      setHist ledSearch expandTab insMode _getLine _led saveHistory ) )
+      chgLine skipQ escQ delim? lMove bMove rMove eMove xMove uMove dMove lWord
+      rWord lPar rPar clrEol insChar del1 delChar delWord rplChar doUndo doPaste
+      setHist ledSearch expandTab insMode cmdMode _getLine _led saveHistory ) )
 
 # vi:et:ts=3:sw=3
