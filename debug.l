@@ -201,7 +201,7 @@
          (path (cdr "*Ed")) ) ) )
 
 # Emacs users:
-# As you set tags-table-list here, do not also set `tags-file-name'.
+# as you set 'tags-table-list' here, do not also set `tags-file-name'.
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
@@ -221,10 +221,11 @@
                "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
                "(mapc (lambda (F)"
                "(unless (file-exists-p (expand-file-name F))"
-               "(delete F tags-table-list)))"
+               "(setq tags-table-list (delete F tags-table-list))))"
                "tags-table-list)"
                "(delete-dups tags-table-list)"
                "(setq tags-table-list (delete \"\" tags-table-list))"
+               "(setq tags-file-name nil)"
                " )" ) ) )
       (flush)
       (call "emacsclient"
