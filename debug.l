@@ -200,9 +200,29 @@
          (pack "+" (car "*Ed"))
          (path (cdr "*Ed")) ) ) )
 
+# Remark for Emacs users:
+# As you set tags-table-list here, do not also set `tags-file-name'.
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
+      (let A (pack (tmp "tags"))
+         (unless (info A)
+            (call 'touch A) )
+         (call "emacsclient"
+            "-e"
+            (pack
+               "(let ((tag-file "
+               (pack "\"" A  "\"")
+               "))"
+               "(message \"tag-file: %S\" tag-file)"
+               "(setq tags-table-list (append `(,tag-file) tags-table-list))"
+               "(mapc (lambda (F)"
+               "(unless (file-exists-p (expand-file-name F))"
+               "(delete F tags-table-list)))"
+               "tags-table-list)"
+               "(message \"tags-table-list: %S\" tags-table-list)"   
+               ")" ) ) )
+      (flush)
       (call "emacsclient"
          "-c"
          (pack "+" (car "*Ed"))

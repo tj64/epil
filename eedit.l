@@ -65,7 +65,28 @@ C-c":
 | only these files will be asked to be saved.
 `---------------------------------------------------------------------
 
-}#
+** Put the edited buffer into PicoLisp Mode 
+
+The PicoLisp distribution contains a PicoLisp major mode for Emacs,
+'picolisp.el' in the 'lib/el/' folder. Make sure that you load this
+file on Emacs startup and automatically put '.l' files into
+picolisp-mode, e.g. with the following code in you .emacs:
+
+,------------------------------------------------------------
+| (add-to-list 'load-path "~/path/to/picolisp/lib/el/")
+| (require 'picolisp)
+| (add-to-list 'auto-mode-alist '("\\.l\\'" . picolisp-mode))
+`------------------------------------------------------------
+
+** Add and remove symbols from the 'edit' buffer
+
+With point on a symbol (or with a symbol marked as region in transient
+mark mode), 'C-c C-v' (picolisp-edit-K) adds this symbol on top of the
+editing buffer. A subsequent 'C-c C-c' (picolisp-edit-Q) removes it
+again and puts point back to its previous line. Using 'C-c C-c' when
+only one symbol is left exits the 'edit' buffer.
+
+ }#
 
 
 (de edit @
@@ -128,3 +149,15 @@ C-c":
          (push '"Lst" "X")
          ("loc" (car "X") "Lst")
          ("loc" (cdr "X") "Lst") ) ) )
+
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
