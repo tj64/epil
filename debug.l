@@ -200,28 +200,32 @@
          (pack "+" (car "*Ed"))
          (path (cdr "*Ed")) ) ) )
 
-# Remark for Emacs users:
+# Emacs users:
 # As you set tags-table-list here, do not also set `tags-file-name'.
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
-      (let A (pack (tmp "tags"))
-         (unless (info A)
-            (call 'touch A) )
+      (let (T1 "./src64/tags" T2 (pack (tmp "tags")))
+         (unless (info T2)
+            (call 'touch T2) )
          (call "emacsclient"
             "-e"
             (pack
-               "(let ((tag-file "
-               (pack "\"" A  "\"")
-               "))"
-               "(message \"tag-file: %S\" tag-file)"
-               "(setq tags-table-list (append `(,tag-file) tags-table-list))"
+               "(let ((tmp-tags "
+               (pack "\"" T2 "\"")
+               ")"
+               "(src-tags (expand-file-name "
+               (pack "\"" T1 "\"" )
+               ")))"
+               "(setq tags-table-list "
+               "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
                "(mapc (lambda (F)"
                "(unless (file-exists-p (expand-file-name F))"
                "(delete F tags-table-list)))"
                "tags-table-list)"
-               "(message \"tags-table-list: %S\" tags-table-list)"   
-               ")" ) ) )
+               "(delete-dups tags-table-list)"
+               "(setq tags-table-list (delete \"\" tags-table-list))"
+               " )" ) ) )
       (flush)
       (call "emacsclient"
          "-c"
