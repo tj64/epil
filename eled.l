@@ -156,29 +156,31 @@
                   N ) ) ) ) ) )
 
 # Move word right
+# M (Line-lenght) N (Line-positon) L (Line-tail)
 (de rWord ()
    (use (M N L)
       (setq M (length "Line"))
       (chgLine "Line"
          (if (<= M (setq N "LPos"))
-            M
+            (inc M)
             (loop
-               (T (= M (inc 'N)) M)
+               (T (= M (inc 'N))
+                  (if (delim? (get "Line" N)) M (inc M)) )
                (setq L (nth "Line" (dec N)))
-               (T (and (delim? (car L)) (not (delim? (cadr L))))
+               (T (and (delim? (cadr L)) (not (delim? (car L))))
                   N ) ) ) ) ) )
 
-(de vi-rWord ()
-   (use (M N L)
-      (setq M (length "Line"))
-      (chgLine "Line"
-         (if (<= M (setq N "LPos"))
-            M
-            (loop
-               (T (= M (inc 'N)) M)
-               (setq L (nth "Line" (dec N)))
-               (T (and (delim? (car L)) (not (delim? (cadr L))))
-                  N ) ) ) ) ) )
+## (de vi-rWord ()
+##    (use (M N L)
+##       (setq M (length "Line"))
+##       (chgLine "Line"
+##          (if (<= M (setq N "LPos"))
+##             M
+##             (loop
+##                (T (= M (inc 'N)) M)
+##                (setq L (nth "Line" (dec N)))
+##                (T (and (delim? (car L)) (not (delim? (cadr L))))
+##                   N ) ) ) ) ) )
 
 # Match left parenthesis
 (de lPar ()
@@ -626,12 +628,6 @@
          ((assoc Key "FKey")
             (cons (cons Key Prg) (delete @ "FKey")) )
          (T (cons (cons Key Prg) "FKey")) ) ) )
-
-## (when (sys "TERM")
-##    (fkey "^[[A" (uMove) (xMove))
-##    (fkey "^[[B" (dMove) (xMove))
-##    (fkey "^[[C" (rMove T))
-##    (fkey "^[[D" (lMove)) )
 
 # Main editing functions
 (de _led ("Line1" "tabFun" "skipFun")
