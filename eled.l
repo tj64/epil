@@ -1,4 +1,4 @@
-de# 19nov12tj
+# 19nov12tj
 # Authors Alexander Burger, Thorsten Jolitz
 # (c) Software Lab. Alexander Burger
 
@@ -106,7 +106,7 @@ de# 19nov12tj
 
 # Check for delimiter
 (de delim? (C)
-   (member C '`(chop '" ^I^J^M\"'()[]`~")) )
+   (member C '`(chop '" ^I^J^M\"'()[]`~-")) )  # dash added for emacs-style
 
 # Move left
 (de lMove ()
@@ -217,7 +217,7 @@ de# 19nov12tj
          (setq L (del1 "Line"))
          (max 1 (min "LPos" (length L))) ) ) )
 
-# Delete a sexp (F: with trailing blank)
+# Delete a sexp
 (de delSexp ()
    (let L "Line"
       (off "Clip")
@@ -231,36 +231,35 @@ de# 19nov12tj
 # Delete a word (F: with trailing blank)
 (de delWord (F)
    (let L "Line"
-      (off "Clip")
-      (ifn (= "(" (get L "LPos"))
+      ## (off "Clip")
+      (and (delim? (get L "LPos"))
+         (while (and (nth L "LPos") (delim? (get L "LPos")))
+            (setq L (del1 L)) ) )
+      (unless (delim? (get L "LPos"))
          (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
-            (setq L (del1 L)) )
-         (for (N 1 (and (setq L (del1 L)) (< 0 N)))
-            (case (get L "LPos")
-               ("(" (inc 'N))
-               (")" (dec 'N)) ) ) )
+            (setq L (del1 L)) ) )
       (and
          F
          (sp? (get L "LPos"))
          (setq L (del1 L)) )
-      (chgLine L (max 1 (min "LPos" (length L)))) ) )
+      (chgLine L (max 1 (min "LPos" (length L))))
+      (and (= "LPos" (length L) (rMove T))) ) )
 
-
-(de vi-delWord (F)
-   (let L "Line"
-      (off "Clip")
-      (ifn (= "(" (get L "LPos"))
-         (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
-            (setq L (del1 L)) )
-         (for (N 1 (and (setq L (del1 L)) (< 0 N)))
-            (case (get L "LPos")
-               ("(" (inc 'N))
-               (")" (dec 'N)) ) ) )
-      (and
-         F
-         (sp? (get L "LPos"))
-         (setq L (del1 L)) )
-      (chgLine L (max 1 (min "LPos" (length L)))) ) )
+## (de vi-delWord (F)
+##    (let L "Line"
+##       (off "Clip")
+##       (ifn (= "(" (get L "LPos"))
+##          (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
+##             (setq L (del1 L)) )
+##          (for (N 1 (and (setq L (del1 L)) (< 0 N)))
+##             (case (get L "LPos")
+##                ("(" (inc 'N))
+##                (")" (dec 'N)) ) ) )
+##       (and
+##          F
+##          (sp? (get L "LPos"))
+##          (setq L (del1 L)) )
+##       (chgLine L (max 1 (min "LPos" (length L)))) ) )
 
 # Replace char
 (de rplChar (C)
