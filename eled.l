@@ -1,4 +1,4 @@
-# 19nov12tj
+de# 19nov12tj
 # Authors Alexander Burger, Thorsten Jolitz
 # (c) Software Lab. Alexander Burger
 
@@ -170,18 +170,6 @@
                (T (and (delim? (cadr L)) (not (delim? (car L))))
                   N ) ) ) ) ) )
 
-## (de vi-rWord ()
-##    (use (M N L)
-##       (setq M (length "Line"))
-##       (chgLine "Line"
-##          (if (<= M (setq N "LPos"))
-##             M
-##             (loop
-##                (T (= M (inc 'N)) M)
-##                (setq L (nth "Line" (dec N)))
-##                (T (and (delim? (car L)) (not (delim? (cadr L))))
-##                   N ) ) ) ) ) )
-
 # Match left parenthesis
 (de lPar ()
    (let (N 1 I (dec "LPos"))
@@ -229,8 +217,36 @@
          (setq L (del1 "Line"))
          (max 1 (min "LPos" (length L))) ) ) )
 
+# Delete a sexp (F: with trailing blank)
+(de delSexp ()
+   (let L "Line"
+      (off "Clip")
+      (if (= "(" (get L "LPos"))
+         (for (N 1 (and (setq L (del1 L)) (< 0 N)))
+            (case (get L "LPos")
+               ("(" (inc 'N))
+               (")" (dec 'N)) ) ) )
+      (chgLine L (max 1 (min "LPos" (length L)))) ) )
+   
 # Delete a word (F: with trailing blank)
 (de delWord (F)
+   (let L "Line"
+      (off "Clip")
+      (ifn (= "(" (get L "LPos"))
+         (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
+            (setq L (del1 L)) )
+         (for (N 1 (and (setq L (del1 L)) (< 0 N)))
+            (case (get L "LPos")
+               ("(" (inc 'N))
+               (")" (dec 'N)) ) ) )
+      (and
+         F
+         (sp? (get L "LPos"))
+         (setq L (del1 L)) )
+      (chgLine L (max 1 (min "LPos" (length L)))) ) )
+
+
+(de vi-delWord (F)
    (let L "Line"
       (off "Clip")
       (ifn (= "(" (get L "LPos"))
@@ -367,6 +383,8 @@
                          (T (beep)) ) )
                      # show present working directory (pwd)
                      ("^d" (prinl (pwd)) (quit))
+                     # delete sexp
+                     ("^k" (delSexp))
                      # goto/find char
                      ("g"
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))

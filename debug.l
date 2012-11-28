@@ -205,9 +205,9 @@
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
-      (let (T1 "./src64/tags" T2 (pack (tmp "tags")))
-         (unless (info T2)
-            (call 'touch T2) )
+      (let (T1 (path "@src64/tags") T2 (pack (tmp "tags")))
+         ## (unless (info T2)
+         ##    (call 'touch T2) )
          (call "emacsclient"
             "-e"
             (pack
