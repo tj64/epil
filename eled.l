@@ -381,8 +381,8 @@
                          (")" (lPar))
                          (T (beep)) ) )
                      # show present working directory (pwd)
-                     ("^d" (prinl (pwd)) (quit))
                      # delete sexp
+                     ("^d" (prinl (pwd)) (quit))
                      ("^k" (delSexp))
                      # goto/find char
                      ("g"
@@ -454,14 +454,20 @@
                            (setq "UndoLine" "L" "UndoPos" "P") ) )
                      # list directory files
                      ("^d" (printsp (dir (pwd))) (prinl) (quit))
-                     # dired-style directory listing (ls -al)
+                     # dired-style directory listing (ls -l)
                      ("d" (call 'ls "-l") (quit))
+                     # find file (with EMACSCLIENT)
+                     ("^f"
+                      (prog
+                        (prinl "[(pwd) " (pwd) "]")
+                        (prin "(emacsclient -c) ")
+                        (call 'emacsclient "-c" (line T)) (quit) ) )
                      # find-file (with ZILE)
                      ("f"
-                      (use X
+                      (prog
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(zile) ")
-                        (call 'zile (read)) (quit) ) )
+                        (call 'zile (line T)) (quit) ) )
                      # return (a list with) the number of lines of file(s)
                      ("l"
                         (prinl "[(pwd) " (pwd) "]")
@@ -472,8 +478,6 @@
                                  (split (chop (line T)) " ") ) ) )
                            (quit) )
 
-                     # edit file (with EMACSCLIENT)
-                     ## ("^f" (edit ) )
  ) ) )
                         ## (case @
                         ##    ((call 'test "-f" X)
