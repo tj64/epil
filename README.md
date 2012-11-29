@@ -1,7 +1,7 @@
-epil
+PicoLisp Line Editing 
 ====
 
-# PicoLisp Line Editing #
+# Emacs-like editing for PicoLisp #
 
 [PicoLisp](file:///home/tj/bin/picoLisp/doc/tut.html) permanently
 reads input from the current input channel (i.e. the console in
@@ -33,7 +33,7 @@ To switch back to 'vi' style, call `(vi)`, use the `-vi` command line
 option, or simply remove "~/.pil/editor".
 
 
-### Emacs-like editing for PicoLisp ###
+# The Key-Bindings Reference #
 
 It is very helpful - though not absolutely necessary - when you know
 how to use the Emacs editor.
@@ -146,7 +146,7 @@ listed below.
     | toggle char case | M-c or M-l |
     
     
-    ** The Command Line (aka The Minibuffer) 
+    ** The Command Line 
     
     | action                       | keys  |
     |------------------------------+-------|
@@ -174,7 +174,7 @@ listed below.
     |                             | (or C-c C-!) |
     | clear screen                | C-l          |
     | terminate process           | C-q          |
-    | interrupt program execution | C-           |
+    | interrupt program execution | C-r          |
 
 
 

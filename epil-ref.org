@@ -111,7 +111,7 @@ The arrow keys can be used for navigation too.
 | toggle char case | M-c or M-l |
 
 
-** The Command Line (aka The Minibuffer) 
+** The Command Line 
 
 | action                       | keys  |
 |------------------------------+-------|
@@ -156,7 +156,7 @@ works in Emacs after using (em 'fun) for editing PicoLisp sources
 |                             | (or C-c C-!) |
 | clear screen                | C-l          |
 | terminate process           | C-q          |
-| interrupt program execution | C-           |
+| interrupt program execution | C-r          |
 
 
 ** Registers
