@@ -1,21 +1,61 @@
-#+TITLE: Emacs-style PicoLisp Editing - Reference Card
-#+AUTHOR: Thorsten Joltiz
-#+DATE: <2012-11-29 Do>
+2{Emacs-style PicoLisp Editing}
+3{Introduction}
 
-* Tabular overview of keybindings used by *eled*
+/{(from the tutorial)}
 
-** Starting PicoLisp with Emacs-style line-editing
+You can switch the command line editor to an 'emacs' style, if you
+call the function :{(em)} (i.e. without arguments). A single call is
+enough. Alternatively, you could invoke PicoLisp at least once with
+the :{-em} command line option
 
+:{
+$ pil -em +
+:
+}
+
+The style will be remembered in a file "~/.pil/editor", and used in
+all subsequent PicoLisp sessions.
+
+To switch back to 'vi' style, call :{(vi)}, use the :{-vi} command
+line option, or simply remove "~/.pil/editor".
+
+3{Documentation for /{(em)}}
+
+/{(from the reference)}
+
+:{
+(em 'sym) -> sym
+(em 'sym 'cls) -> sym
+(em '(sym . cls)) -> sym
+(em) -> NIL
+
+    (Debug mode only) Opens the "emacs" editor on the function or
+    method definition of sym. A call to ld thereafter will load the
+    modified file. A call without arguments permanently switches the
+    REPL line editor and the edit function to "emacs" mode. See also
+    doc, edit, vi, *Dbg, debug and pp.
+
+
+    : (em 'url> '+CuSu)  # Edit the method's source code, then exit from 'emacs'
+    -> T
+}
+
+3{Reference (Cheat Sheet)}
+
+4{Starting PicoLisp with Emacs-style line-editing}
+
+:{
 | action        | comment                           |
 |---------------+-----------------------------------|
 | $ ./pil -em + | 'pil +' with "-em" shell argument |
 |---------------+-----------------------------------|
 | $ ./pil +     | or simply 'pil +'                 |
 | : (em)        | and then '(em)' in the REPL       |
+}
 
+4{Files and Directories}
 
-** Files and Directories (/PicoLisp/)
-
+:{
 | action                                | keys        |
 |---------------------------------------+-------------|
 | show pwd                              | C-M-d       |
@@ -29,11 +69,11 @@
 | find file (zile)                      | C-x f       |
 | line number(s) of file(s)             | C-x l       |
 
+}
 
+4{Help/Info/Debugging}
 
-
-** Help/Info/Debugging
-
+:{
 | action                | keys      |
 |-----------------------+-----------|
 | debug                 | C-h d     |
@@ -45,8 +85,11 @@
 | pretty print (pretty) | C-h p r   |
 |                       |           |
 
+}
 
-** Error Recovery
+4{Quit/Stop/Undo}
+
+:{
 
 | action        | keys         |
 |---------------+--------------|
@@ -54,16 +97,20 @@
 | undo          | C-x u or C-_ |
 | quit          | C-q          |
 
+}
 
-** (Incremental) Search
+4{(Incremental) Search}
 
+:{
 | action           | keys |
 |------------------+------|
 | goto (find) char | M-g  |
 
+}
 
-** Motion
+4{Motion}
 
+:{
 | entitiy to move over | backward | forward |
 |----------------------+----------+---------|
 | character            | C-b      | C-f     |
@@ -73,9 +120,12 @@
 | sexp                 | C-M-b    | C-M-f   |
 
 The arrow keys can be used for navigation too. 
+}
 
-** Killing and Deleting
 
+4{Killing and Deleting}
+
+:{
 | entitiy          | backward    | forward |
 |------------------+-------------+---------|
 | character        | BACKSPACE   | C-d     |
@@ -88,31 +138,20 @@ The arrow keys can be used for navigation too.
 | kill sexp         | C-M-k |
 | yank              | C-y   |
 | content kill-ring | C-h r |
+}
 
-** Marking
+4{Case Change}
 
-| entitiy | action |
-|---------+--------|
-|         |        |
-|         |        |
-
-
-** Query Replace
-
-| entitiy | action |
-|---------+--------|
-|         |        |
-|         |        |
-
-** Case Change
-
+:{
 | action           | keys       |
 |------------------+------------|
 | toggle char case | M-c or M-l |
 
+}
 
-** The Command Line (aka The Minibuffer) 
+4{The Command Line}
 
+:{
 | action                       | keys  |
 |------------------------------+-------|
 | complete word                | TAB   |
@@ -121,34 +160,22 @@ The arrow keys can be used for navigation too.
 | history search forward       | M-s   |
 | history search backward      | M-r   |
 
+}
 
+4{Tags}
 
-** Query Replace
-
-| action | keys |
-|--------+------|
-|        |      |
-|        |      |
-
-
-** Transposing
-
-| action | keys |
-|--------+------|
-|        |      |
-|        |      |
-
-
-** Tags
-
+:{
 | action       | keys |
 |--------------+------|
 | find tag     | M-.  |
 | pop tag-mark | M-*  |
 
 works in Emacs after using (em 'fun) for editing PicoLisp sources
+}
 
-** Shell
+4{Shell}
+
+:{
 
 | action                      | keys         |
 |-----------------------------+--------------|
@@ -156,79 +183,8 @@ works in Emacs after using (em 'fun) for editing PicoLisp sources
 |                             | (or C-c C-!) |
 | clear screen                | C-l          |
 | terminate process           | C-q          |
-| interrupt program execution | C-           |
+| interrupt program execution | C-r          |
 
 
-** Registers
-
-| action | keys |
-|--------+------|
-|        |      |
-|        |      |
-
-
-** Commands Dealing with PicoLisp
-
-| action | keys |
-|--------+------|
-|        |      |
-|        |      |
-
-
-* Emacs Remote Control (from the PicoLisp command Line)
-
-** Files and Directories (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-
-** Buffers (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-
-** Org-mode (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-
-** GNUS (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-
-** W3M (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-** IRC (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-** CALC (/Emacs Remote Control/)
-
-| entitiy | action | comment                        |
-|---------+--------+--------------------------------|
-|         |        | <30>                           |
-|         |        |                                |
-
-  
+}
 

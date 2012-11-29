@@ -26,17 +26,44 @@
    [2012-11-11 So 13:47]
 ** NEXT write cheat-sheet for Emacs command-line
    [2012-11-11 So 13:46]
-** TODO how to create (emacs) tag file for living system?
+** DONE how to create (emacs) tag file for living system?
+   CLOSED: [2012-11-29 Do 18:10]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-29 Do 18:10]
+   :END:
    [2012-11-11 So 13:41]
-** TODO how to convert ctags to etags/exuberant ctags?
+** DONE how to convert ctags to etags/exuberant ctags?
+   CLOSED: [2012-11-29 Do 18:10]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-29 Do 18:10]
+   :END:
    [2012-11-11 So 13:40]
-** TODO write 'em' and 'zi' functions (replacing 'vi')
+** DONE write 'em' function (replacing 'vi')
+   CLOSED: [2012-11-29 Do 18:10]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-29 Do 18:10]
+   :END:
    [2012-11-11 So 11:07]
-*** use 'inferior-picolisp' for editing buffer
+*** CANCELLED use 'inferior-picolisp' for editing buffer          :CANCELLED:
+    CLOSED: [2012-11-29 Do 18:11]
+    :LOGBOOK:
+    - State "CANCELLED"  from ""           [2012-11-29 Do 18:11] \\
+      not such a good idea.
+    :END:
    [2012-11-11 So 13:42]
-** TODO implement K and Q functions for Zile
+** CANCELLED implement K and Q functions for Zile                 :CANCELLED:
+   CLOSED: [2012-11-29 Do 17:07]
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2012-11-29 Do 17:07] \\
+     Possible only in C or LUA. Volunteers welcome.
+   :END:
    [2012-11-11 So 11:06]
-** TODO make 'edit' work with Zile
+** CANCELLED make 'edit' work with Zile                           :CANCELLED:
+   CLOSED: [2012-11-29 Do 17:06]
+   :LOGBOOK:
+   - State "CANCELLED"  from "TODO"       [2012-11-29 Do 17:06] \\
+     Don't know C, and Zile Lisp is too small to write your own functions.
+   :END:
    [2012-11-11 So 11:05]
 ** DONE implement K and Q functions in Emacs Lisp
    CLOSED: [2012-11-11 So 11:05]
@@ -44,13 +71,29 @@
    - State "DONE"       from "TODO"       [2012-11-11 So 11:05]
    :END:
    [2012-11-11 So 10:57]
-** NEXT make 'edit' work with Emacsclient
+** DONE make 'edit' work with Emacsclient
+   CLOSED: [2012-11-29 Do 17:06]
+   :LOGBOOK:
+   - State "DONE"       from "NEXT"       [2012-11-29 Do 17:06]
+   :END:
    [2012-11-11 So 10:55]
-*** TODO use linenumber to position point in Emacsclient call
+*** DONE use linenumber to position point in Emacsclient call
+    CLOSED: [2012-11-29 Do 17:06]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2012-11-29 Do 17:06]
+    :END:
     [2012-11-11 So 10:59]
-*** TODO make Emacsclient call more generic
+*** DONE make Emacsclient call more generic
+    CLOSED: [2012-11-29 Do 17:06]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2012-11-29 Do 17:06]
+    :END:
    [2012-11-11 So 10:58]
-** TODO make C-h prefix available for redefinition (help prefix)
+** DONE make C-h prefix available for redefinition (help prefix)
+   CLOSED: [2012-11-29 Do 17:05]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-29 Do 17:05]
+   :END:
    [2012-11-11 So 11:11]
    (see JED homepage)
 ** DONE Emacs key-bindings for existing Vi editing/navigation functions
@@ -59,11 +102,11 @@
    - State "DONE"       from "TODO"       [2012-11-11 So 10:55]
    :END:
    [2012-11-11 So 10:53]
-** NEXT implement new Emacs editing functionality in PicoLisp
+** TODO implement new Emacs editing functionality in PicoLisp
    [2012-11-11 So 08:19]
 *** TODO edebug keybindings for PicoLisp debugger
     [2012-11-11 So 13:54]
-*** TODO help and info funcionality (keybindings for PicoLisp functions)
+*** NEXT help and info funcionality (keybindings for PicoLisp functions)
     [2012-11-11 So 13:53]
 *** DONE directory editing (keybindings for PicoLisp functions)
     CLOSED: [2012-11-11 So 13:45]
@@ -77,11 +120,22 @@
     - State "DONE"       from "TODO"       [2012-11-11 So 13:45]
     :END:
     [2012-11-11 So 13:38]
-*** TODO file handling (keybindings for PicoLisp functions)
+*** NEXT file handling (keybindings for PicoLisp functions)
     [2012-11-11 So 13:36]
-*** TODO keybindings for K and Q functions
-    [2012-11-11 So 13:36]
-*** TODO use C-q for (C-u C-x C-c)
+*** DONE keybindings for K and Q functions
+    CLOSED: [2012-11-29 Do 17:03]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2012-11-29 Do 17:03]
+    :END:
+    [2012-11-11 So 13:36] 
+The functions have been moved to '@lib/el/picolisp.el' in the
+distribution, the Emacs major-mode for PicoLisp.
+*** CANCELLED use C-q for (C-u C-x C-c)                           :CANCELLED:
+    CLOSED: [2012-11-29 Do 17:00]
+    :LOGBOOK:
+    - State "CANCELLED"  from "TODO"       [2012-11-29 Do 17:00] \\
+      Using picolip-edit-Q (C-c C-c) terminates without prompting for user info.
+    :END:
     [2012-11-11 So 11:39]
 *** TODO more case change functionality
     [2012-11-11 So 11:39]
@@ -91,7 +145,11 @@
     [2012-11-11 So 11:11]
 *** TODO set mark and act on region
    [2012-11-11 So 11:09]
-** TODO ask Alex how to integrate epil in the distribution
+** DONE ask Alex how to integrate epil in the distribution
+   CLOSED: [2012-11-29 Do 17:00]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2012-11-29 Do 17:00]
+   :END:
    [2012-09-02 So 05:34]
 ** TODO announce new version in mailing-list
   [2012-09-02 So 05:33]

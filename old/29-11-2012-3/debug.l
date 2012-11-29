@@ -1,4 +1,5 @@
 # 29nov12tj
+# Authors Alexander Burger, Thorsten Jolitz
 # (c) Software Lab. Alexander Burger
 
 # Prompt
@@ -200,32 +201,31 @@
          (pack "+" (car "*Ed"))
          (path (cdr "*Ed")) ) ) )
 
-# Emacs interface (Thorsten Jolitz)
-# Note:
-#   As 'tags-table-list' is set here, do not also set `tags-file-name'
-#   make sure, tsm.el and picolisp.el are loaded (in that order) and put
-#   the edited .l file in picolisp mode (M-x picolisp-mode)
+# Emacs users:
+# as you set 'tags-table-list' here, do not also set `tags-file-name'.
+# make sure, tsm.el and picolisp.el are loaded (in that order) and put 
+# the edited .l file in picolisp mode (M-x picolisp-mode). 
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
-      (call "emacsclient"
-         "-a" NIL
-         "-e"
-         (pack
-            "(let ((tmp-tags \"" (tmp "tags") "\")"
-            "(src-tags (expand-file-name \"" (path "@src64/tags")
-            "\")))"
-            "(setq tags-table-list "
-            "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
-            "(mapc (lambda (F)"
-            "(unless (file-exists-p (expand-file-name F))"
-            "(setq tags-table-list (delete F tags-table-list))))"
-            "tags-table-list)"
-            "(delete-dups tags-table-list)"
-            "(setq tags-table-list (delete \"\" tags-table-list))"
-            "(setq tags-file-name nil)"
-            " )" ) )
-      (call "emacsclient"
+         (call "emacsclient"
+            "-a" ""
+            "-e"
+            (pack
+              "(let ("
+               "(tmp-tags " (pack "\"" (tmp "tags") "\"") ")"
+               "(src-tags (expand-file-name "
+                (pack "\"" (path "@src64/tags") "\"") ")))"
+               "(setq tags-table-list "
+               "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
+               "(mapc (lambda (F)"
+               "(unless (file-exists-p (expand-file-name F))"
+               "(setq tags-table-list (delete F tags-table-list))))"
+               "tags-table-list)"
+               "(delete-dups tags-table-list)"
+               "(setq tags-table-list (delete \"\" tags-table-list))"
+               "(setq tags-file-name nil))" ) )
+         (call "emacsclient"
          "-c"
          (pack "+" (car "*Ed"))
          (path (cdr "*Ed")) ) ) )

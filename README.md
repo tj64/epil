@@ -1,99 +1,54 @@
 epil
 ====
 
-Emacs-style **PicoLisp** command line - non-modal line editing with
-Emacs keybindings.
+# PicoLisp Line Editing #
 
-## Global Installation ##
+[PicoLisp](file:///home/tj/bin/picoLisp/doc/tut.html) permanently
+reads input from the current input channel (i.e. the console in
+interactive mode), evaluates it, and prints the result to the current
+output channel. This is called a "read-eval-print-loop" (REPL).
 
-This assumes that you finished successfully the global *PicoLisp*
-installation as described in the *PicoLisp*
-[INSTALL](http://software-lab.de/INSTALL) file. 
+## 'vi'-style  ##
 
-To enable `eled.l` and `eedit.l`, the Emacs variants of `led.l` and
-`edit.l`, in a global PicoLisp installation, do the following (as
-root, changing owner and group of each file to `root`): 
+This is the default line editor, as it needs less system resources and
+works also on dumb terminals. It is similar to -- though simpler than
+-- the 'vi' edit modes of the 'korn' and 'bash' shells. For an analog
+'emacs' style editor, please see below.
 
-1. Copy `elib.l`, `edbg` and `edbg.l`  to `/picolisp/` (make `edbg` executable)
-2. Copy `epil` to `/picolisp/bin/` and make it executable 
-3. Copy `eedit.l` and the other `e` prefixed libraries to
-`/picolisp/lib/`
-4. create a symlink: `# ln -s /usr/lib/picolisp/bin/epil /usr/bin/epil`
+## 'emacs'-style ##
 
-Instead of copying the files, it might be preferable to clone this
-gitrepo and *symlink* the files from the repo to the respective
-directories in the global PicoLisp installation (as root).
+You can switch the command line editor to an 'emacs' style, if you
+call the function `(em)` (i.e. without arguments). A single call is
+enough. Alternatively, you could invoke PicoLisp at least once with
+the `-em` command line option
 
-## Invocation ##
 
-In a global installation, the 'epil' command should be used. You can either start
-in plain or in debug mode. The difference is that for debug mode the command is
-followed by single plus ('+') sign. The '+' must be the very last argument on
-the command line.
-
-    $ epil       # Plain mode
+    $ pil -em +
     :
 
-    $ epil +     # Debug mode
-    :
+The style will be remembered in a file "~/.pil/editor", and used in
+all subsequent PicoLisp sessions.
 
-In both cases, the colon ':' is PicoLisp's prompt. You may enter some Lisp
-expression,
-
-    : (+ 1 2 3)
-    -> 6
-
-To exit the interpreter, enter
-
-    : (bye)
-
-or just type Ctrl-Q.
+To switch back to 'vi' style, call `(vi)`, use the `-vi` command line
+option, or simply remove "~/.pil/editor".
 
 
-For a local invocation, specify a path name, e.g.
-    
-    $ ./epil     # Plain mode
-    :
-
-    $ ./epil +   # Debug mode
-    :
-
-or
-
-    $ /home/app/epil  # Invoking a local installation from some other directory
-
-
-A shortcut for debug mode is the 'edbg' script:
-
-    $ ./edbg
-    :
-
-It is available only for local installaions, and is eqivalent to
-
-    $ ./epil +
-
-Note that 'epil' can also serve as a template for your own stand-alone scripts.
-
-
-## Emacs-like editing for PicoLisp ##
+### Emacs-like editing for PicoLisp ###
 
 It is very helpful - though not absolutely necessary - when you know
 how to use the Emacs editor.
 
-To alleviate the task of manual line input, a command line editor is
-provided which is similar to (though much simpler than) the readline
-feature of the bash shell. Only a subset of the Emacs mode is
-supported. It is loaded at startup in debug mode, you find its source
-in "lib/eled.l".
+To alleviate the task of manual line input for people not used to
+*vi*, a (second) command line editor is provided which is modeled
+after Emacs. It is loaded at startup in debug mode (see above), you
+find its source in "lib/eled.l".
 
 For Emacs, in contrast to Vi, there is only the Insert Mode. You can
 enter lines in the normal way, correcting mistypes with the BACKSPACE
 key, and terminating them with the ENTER key.
 
 The key commands in the Emacs-mode of the PicoLisp command line are
-listed below. Deleting or changing a "word" take either the current
-atom (number or symbol), or a whole expression when the cursor is at a
-left parenthesis.
+listed below. 
 
   * C-p (^p) - Go up one line
   * C-n (^n) - Go down one line
@@ -127,23 +82,23 @@ Notes:
   * The history is stored in the file ".pil/history" in the user's home
     directory. The length of the history is limited to 1000 lines.
 
-The following two key-combinations work both in Insert and Command Mode:
+The following two key-combinations are special:
 
-  * Ctrl-Q (C-q or ^q) will immediately terminate the current process.
+  * Ctrl-Q (C-q or ^q) will immediately terminate the current process. 
   * Ctrl-G (C-g or ^g) discards all input, abandons further
     processing, and returns to the interpreter's top level (equivalent
     to invoking quit). This is also useful when the program stopped at
     a breakpoint (see single-stepping Debugging), or after program
-    execution was interrupted with Ctrl-C.
+    execution was interrupted with Ctrl-R.
 
 Besides these two keys, in Insert Mode only the following keys have a special
 meaning:
 
-  * BACKSPACE (Ctrl-H **[??]**) and DEL erase the character to the left
+  * BACKSPACE and DEL erase the character to the left
   * TAB performs symbol and/or path completion: When a symbol (or path) name is
     entered partially and TAB is pressed subsequently, all internal symbols
     (and/or path names in the file system) matching the partial input are shown
-    in sequence. **TODO**
+    in sequence. 
   * ESC-key sequence can be used instead of M-key (ALT-key).
 
 Conclusion
@@ -154,4 +109,4 @@ will make life much easier in the future :-)
 
 ## Disclaimer ##
 
-This is work in progress and *still in experimental state*. 
+This is work in progress and *still in alpha state*. 

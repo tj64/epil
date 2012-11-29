@@ -43,7 +43,7 @@
 # terminal settings. This can be done with
 #
 #    $ stty intr ^A
-p#
+#
 # or, from inside PicoLisp
 #
 #    (call 'stty "intr" "^A")
@@ -384,7 +384,8 @@ p#
                      ("^d" (prinl (pwd)) (quit))
                      # delete sexp
                      ("^k" (delSexp))
-                     # goto/find ch                     ("g"
+                     # goto/find char
+                     ("g"
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
                            (beep)
                            (chgLine "Line" (+ "C" "LPos")) ) )
