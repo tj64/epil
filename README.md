@@ -50,31 +50,136 @@ key, and terminating them with the ENTER key.
 The key commands in the Emacs-mode of the PicoLisp command line are
 listed below. 
 
-  * C-p (^p) - Go up one line
-  * C-n (^n) - Go down one line
-  * C-f (^f) - Go right one character
-  * C-b (^b) - Go left one character
-  * M-f (ESC-f) - Go right one word
-  * M-b (ESC-b) - Go back (left) one word
-  * C-a (^a) - Go to the beginning of the line
-  * C-e (^e) - Go to the end of the line
-  * C-d (^d) - Delete the character at the cursor position
-  * BACKSPACE - Delete the character left of the cursor position
-  * M-d (ESC-d) - Delete the word at the cursor position 
-  * C-k (^k) - Delete the rest of the line
-  * [f - Find next key in the rest of the current line] **TODO**
-  * C-y (^y) - Paste data deleted with x, X, d or D before the cursor position
-  * C-s (^s) or C-r (^r) - Accept an input pattern and search the history for it
-  * [n - Search for next occurrence of pattern (as entered with /)] **TODO**
-  * [N - Search for previous occurrence of pattern] **TODO**
-  * [C-M-f (ESC^s) or C-M-b (ESC^r) - Go to matching parenthesis] **TODO**
-  * M-c (ESC-c) or M-l (ESC-l) -
-     Convert character to opposite (lower or upper) case and move right
-  * C-x u (^x u) or C-_ (^_) - Undo the last change (one level only)
-  * [U - Undo all changes of the current line] **TODO**
-  * C-y (^y) - Display current contents of cut buffer **[???]**
+    
+    * Tabular overview of keybindings used by *eled*
+    
+    ** Starting PicoLisp with Emacs-style line-editing
+    
+    | action        | comment                           |
+    |---------------+-----------------------------------|
+    | $ ./pil -em + | 'pil +' with "-em" shell argument |
+    |---------------+-----------------------------------|
+    | $ ./pil +     | or simply 'pil +'                 |
+    | : (em)        | and then '(em)' in the REPL       |
+    
+    
+    ** Files and Directories 
+    
+    | action                                | keys        |
+    |---------------------------------------+-------------|
+    | show pwd                              | C-M-d       |
+    | change directory                      | C-c C-d     |
+    | make directory                        | C-c +       |
+    | list directory files                  | C-x C-d     |
+    | list directory files (with dot-files) | C-u C-x C-d |
+    | dired-like file list                  | C-x d       |
+    | dired-like file list (with dot-files) | C-u C-x d   |
+    | find file (emacsclient)               | C-x C-f     |
+    | find file (zile)                      | C-x f       |
+    | line number(s) of file(s)             | C-x l       |
+    
+    
+    
+    
+    ** Help/Info/Debugging
+    
+    | action                | keys      |
+    |-----------------------+-----------|
+    | debug                 | C-h d     |
+    | unbug                 | C-u C-h d |
+    | file info             | C-h i     |
+    | symbol doc            | C-h f     |
+    | show symbol           | C-h s     |
+    | pretty print (pp)     | C-h p p   |
+    | pretty print (pretty) | C-h p r   |
+    |                       |           |
+    
+    
+    ** Error Recovery
+    
+    | action        | keys         |
+    |---------------+--------------|
+    | abort command | C-g          |
+    | undo          | C-x u or C-_ |
+    | quit          | C-q          |
+    
+    
+    ** (Incremental) Search
+    
+    | action           | keys |
+    |------------------+------|
+    | goto (find) char | M-g  |
+    
+    
+    ** Motion
+    
+    | entitiy to move over | backward | forward |
+    |----------------------+----------+---------|
+    | character            | C-b      | C-f     |
+    | word                 | M-b      | M-f     |
+    | line up/down         | C-p      | C-n     |
+    | line beg/end         | C-a      | C-e     |
+    | sexp                 | C-M-b    | C-M-f   |
+    
+    The arrow keys can be used for navigation too. 
+    
+    ** Killing and Deleting
+    
+    | entitiy          | backward    | forward |
+    |------------------+-------------+---------|
+    | character        | BACKSPACE   | C-d     |
+    | word             | M-BACKSPACE | M-d     |
+    | line (to end of) |             | C-k     |
+    
+    
+    | action            | keys  |
+    |-------------------+-------|
+    | kill sexp         | C-M-k |
+    | yank              | C-y   |
+    | content kill-ring | C-h r |
+    
+    
+    ** Case Change
+    
+    | action           | keys       |
+    |------------------+------------|
+    | toggle char case | M-c or M-l |
+    
+    
+    ** The Command Line (aka The Minibuffer) 
+    
+    | action                       | keys  |
+    |------------------------------+-------|
+    | complete word                | TAB   |
+    | execute                      | RET   |
+    | history search pattern input | C-M-s |
+    | history search forward       | M-s   |
+    | history search backward      | M-r   |
+    
+    
+    ** Tags
+    
+    | action       | keys |
+    |--------------+------|
+    | find tag     | M-.  |
+    | pop tag-mark | M-*  |
+    
+    works in Emacs after using (em 'fun) for editing PicoLisp sources
+    
+    ** Shell
+    
+    | action                      | keys         |
+    |-----------------------------+--------------|
+    | call shell-command          | C-c C-c      |
+    |                             | (or C-c C-!) |
+    | clear screen                | C-l          |
+    | terminate process           | C-q          |
+    | interrupt program execution | C-           |
 
-Notes:
+
+
+
+### Notes: ###
 
   * Search patterns may contain "@" characters as wildcards.
   * Lines shorter than 3 characters, lines beginning with a space character, or
@@ -109,4 +214,4 @@ will make life much easier in the future :-)
 
 ## Disclaimer ##
 
-This is work in progress and *still in alpha state*. 
+This is work in progress and *still in early state*. 
