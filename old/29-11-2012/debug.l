@@ -1,5 +1,4 @@
-# 29nov12tj
-# Authors Alexander Burger, Thorsten Jolitz
+# 20nov12abu
 # (c) Software Lab. Alexander Burger
 
 # Prompt
@@ -206,13 +205,18 @@
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
+      (let (T1 (path "@src64/tags") T2 (pack (tmp "tags")))
+         ## (unless (info T2)
+         ##    (call 'touch T2) )
          (call "emacsclient"
             "-e"
             (pack
-               "(let ("
-               "(tmp-tags " (pack "\"" (tmp "tags") "\"") ")"
+               "(let ((tmp-tags "
+               (pack "\"" T2 "\"")
+               ")"
                "(src-tags (expand-file-name "
-                (pack "\"" (path "@src64/tags") "\"") ")))"
+               (pack "\"" T1 "\"" )
+               ")))"
                "(setq tags-table-list "
                "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
                "(mapc (lambda (F)"
@@ -221,8 +225,10 @@
                "tags-table-list)"
                "(delete-dups tags-table-list)"
                "(setq tags-table-list (delete \"\" tags-table-list))"
-               "(setq tags-file-name nil))" ) )
-         (call "emacsclient"
+               "(setq tags-file-name nil)"
+               " )" ) ) )
+      (flush)
+      (call "emacsclient"
          "-c"
          (pack "+" (car "*Ed"))
          (path (cdr "*Ed")) ) ) )

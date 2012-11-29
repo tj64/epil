@@ -1,5 +1,5 @@
-# 29nov12tj
-# Authors Thorsten Jolitz, Alexander Burger
+# 19nov12tj
+# Authors Alexander Burger, Thorsten Jolitz
 # (c) Software Lab. Alexander Burger
 
 # Line editor
@@ -9,24 +9,24 @@
    '(*Led fkey revise) )
 
 (setq
-   "Line"      NIL      # Holds current input line
-   "LPos"      1        # Position in line (1 .. length)
-   "HPos"      1        # Position in history
-   "UndoLine"  NIL      # Undo
-   "UndoPos"   0
-   "Line1"     NIL      # Initial line
-   "Insert"    T        # Insert mode flag
-   "FKey"      NIL      # Function key bindings
-   "Clip"      NIL      # Cut/Copy/Paste buffer
-   "Item"      NIL      # Item to find
-   "Found"     NIL      # Find stack
-   "Complete"  NIL      # Input completion
-   "Mark"      NIL      # Position of the mark
-   "Register"  NIL      # Storage for text snippets
+   "Line" NIL # Holds current input line
+   "LPos" 1 # Position in line (1 .. length)
+   "HPos" 1 # Position in history
+   "UndoLine" NIL # Undo
+   "UndoPos" 0
+   "Line1" NIL # Initial line
+   "Insert" T # Insert mode flag
+   "FKey" NIL # Function key bindings
+   "Clip" NIL # Cut/Copy/Paste buffer
+   "Item" NIL # Item to find
+   "Found" NIL # Find stack
+   "Mark" NIL # Position of mark
+   "Register" NIL # (Named) storage for text-snippets
+   "Complete" NIL # Input completion
 
-   "HistMax"   1000     # History limit
+   "HistMax" 1000 # History limit
 
-   "History"            # History of input lines
+   "History" # History of input lines
    (in (pack "+" (pil "history"))
       (ctl NIL
          (make (until (eof) (link (line T)))) ) )
@@ -49,19 +49,19 @@
 #    (call 'stty "intr" "^A")
 
 (raw T)
-(call 'stty "intr" "^R")  # ^R as replacement for ^C 
+(call 'stty "intr" "")
 
 # Basic editing routine
 (de chgLine (L N)
-   (let (D (length "Line")  Tsm)
-      (for (P (dec "LPos") (>= P 1) (dec P))  # To start of old line
+   (let (D (length "Line") Tsm)
+      (for (P (dec "LPos") (>= P 1) (dec P)) # To start of old line
          (unless
             (and
                *Tsm
                (= "\"" (get "Line" P))
                (skipQ "LPos" P "Line") )
             (prin "^H") ) )
-      (for (P . C) (setq "Line" L)  # Output new line
+      (for (P . C) (setq "Line" L) # Output new line
          (cond
             ((> " " C)
                (dec 'D)
@@ -77,10 +77,10 @@
                      C )
                   (and (onOff Tsm) (car *Tsm)) ) ) ) )
       (and Tsm (prin (cdr *Tsm)))
-      (space D)  # Clear rest of old line
+      (space D) # Clear rest of old line
       (do D (prin "^H"))
       (setq "LPos" (inc (length L)))
-      (until (= N "LPos")  # To new position
+      (until (= N "LPos") # To new position
          (unless
             (and
                *Tsm
@@ -106,7 +106,7 @@
 
 # Check for delimiter
 (de delim? (C)
-   (member C '`(chop '" ^I^J^M\"'()[]`~-")) )  # dash added for emacs-style
+   (member C '`(chop '" ^I^J^M\"'()[]`~")) )
 
 # Move left
 (de lMove ()
@@ -117,13 +117,11 @@
    (chgLine "Line" 1) )
 
 # Move right
-(de rMove (F)
+(de rMove ()
    (chgLine "Line"
-      (min
-         (inc "LPos")
-         (if F
-            (inc (length "Line"))
-            (length "Line") ) ) ) )
+      (if (>= "LPos" (length "Line"))
+         "LPos"
+         (inc "LPos") ) ) )
 
 # Move to end of line
 (de eMove ()
@@ -132,16 +130,6 @@
 # Move beyond end of line
 (de xMove ()
    (chgLine "Line" (inc (length "Line"))) )
-
-# Move up
-(de uMove ()
-   (when (< "HPos" (length "History"))
-      (setHist (inc "HPos")) ) )
-
-# Move down
-(de dMove ()
-   (unless (=0 "HPos")
-      (setHist (dec "HPos")) ) )
 
 # Move word left
 (de lWord ()
@@ -156,18 +144,28 @@
                   N ) ) ) ) ) )
 
 # Move word right
-# M (Line-lenght) N (Line-positon) L (Line-tail)
 (de rWord ()
    (use (M N L)
       (setq M (length "Line"))
       (chgLine "Line"
          (if (<= M (setq N "LPos"))
-            (inc M)
+            M
             (loop
-               (T (= M (inc 'N))
-                  (if (delim? (get "Line" N)) M (inc M)) )
+               (T (= M (inc 'N)) M)
                (setq L (nth "Line" (dec N)))
-               (T (and (delim? (cadr L)) (not (delim? (car L))))
+               (T (and (delim? (car L)) (not (delim? (cadr L))))
+                  N ) ) ) ) ) )
+
+(de vi-rWord ()
+   (use (M N L)
+      (setq M (length "Line"))
+      (chgLine "Line"
+         (if (<= M (setq N "LPos"))
+            M
+            (loop
+               (T (= M (inc 'N)) M)
+               (setq L (nth "Line" (dec N)))
+               (T (and (delim? (car L)) (not (delim? (cadr L))))
                   N ) ) ) ) ) )
 
 # Match left parenthesis
@@ -217,49 +215,22 @@
          (setq L (del1 "Line"))
          (max 1 (min "LPos" (length L))) ) ) )
 
-# Delete a sexp
-(de delSexp ()
+# Delete a word (F: with trailing blank)
+(de delWord (F)
    (let L "Line"
       (off "Clip")
-      (if (= "(" (get L "LPos"))
+      (ifn (= "(" (get L "LPos"))
+         (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
+            (setq L (del1 L)) )
          (for (N 1 (and (setq L (del1 L)) (< 0 N)))
             (case (get L "LPos")
                ("(" (inc 'N))
                (")" (dec 'N)) ) ) )
-      (chgLine L (max 1 (min "LPos" (length L)))) ) )
-   
-# Delete a word (F: with trailing blank)
-(de delWord (F)
-   (let L "Line"
-      ## (off "Clip")
-      (and (delim? (get L "LPos"))
-         (while (and (nth L "LPos") (delim? (get L "LPos")))
-            (setq L (del1 L)) ) )
-      (unless (delim? (get L "LPos"))
-         (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
-            (setq L (del1 L)) ) )
       (and
          F
          (sp? (get L "LPos"))
          (setq L (del1 L)) )
-      (chgLine L (max 1 (min "LPos" (length L))))
-      (and (= "LPos" (length L) (rMove T))) ) )
-
-## (de vi-delWord (F)
-##    (let L "Line"
-##       (off "Clip")
-##       (ifn (= "(" (get L "LPos"))
-##          (while (and (nth L "LPos") (not (delim? (get L "LPos"))))
-##             (setq L (del1 L)) )
-##          (for (N 1 (and (setq L (del1 L)) (< 0 N)))
-##             (case (get L "LPos")
-##                ("(" (inc 'N))
-##                (")" (dec 'N)) ) ) )
-##       (and
-##          F
-##          (sp? (get L "LPos"))
-##          (setq L (del1 L)) )
-##       (chgLine L (max 1 (min "LPos" (length L)))) ) )
+      (chgLine L (max 1 (min "LPos" (length L)))) ) )
 
 # Replace char
 (de rplChar (C)
@@ -338,7 +309,7 @@
       (expandTab)
       (off "Complete")
       (case "C"
-         ("^?"
+         (("^H" "^?")
             (when (> "LPos" 1)
                (chgLine (remove (dec "LPos") "Line") (dec "LPos")) ) )
          ## ("^V" (insChar (key)))
@@ -346,14 +317,6 @@
          # 'M-<char>' (Meta or Alt) keymap, implemented with ESC prefix
          ("^[" (and (key 500)
                   (case @
-                     ("[" (when (sys "TERM")
-                             (and (key 500)
-                                (case @
-                                   # arrow keys
-                                   ("A" (uMove) (xMove))
-                                   ("B" (dMove) (xMove))
-                                   ("C" (rMove T))
-                                   ("D" (lMove)) ) ) ) )
                      # forward-word
                      # TODO: emacs  (goto end of word!)
                      ("f" (rWord))
@@ -369,7 +332,7 @@
                              ((if
                                  (low? (setq "C" (get "Line" "LPos")))
                                  uppc lowc ) "C" ) )
-                        (rMove T) )
+                        (rMove) )
                      # forward-sexp
                      ("^f"
                       (case (get "Line" "LPos")
@@ -381,9 +344,7 @@
                          (")" (lPar))
                          (T (beep)) ) )
                      # show present working directory (pwd)
-                     # delete sexp
                      ("^d" (prinl (pwd)) (quit))
-                     ("^k" (delSexp))
                      # goto/find char
                      ("g"
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
@@ -430,19 +391,13 @@
          # 'C-u (Ctrl-u) keymap (functions with arguments)
          ("^u" (and (key 1000)
                  (case @
+                    # list directory files
+                    # (including those starting with .)
                      ("^x" (and (key 500)
                               (case @
-                                 # list directory files with dotfiles
                                  ("^d"
                                   (printsp (dir (pwd) T))
-                                  (prinl) (quit) )
-                                 # dired-style directory listing with dotfiles
-                                 ("d" (call 'ls "-al") (quit)) ) ) )
-                     ("^h" (and (key 500)
-                              (case @
-                                 # unbug
-                                 ("d" (prin "(unbug) ")
-                                    (unbug (any (line T))) (quit) ) ) ) ) ) ) ) 
+                                  (prinl) (quit) ) ) ) ) ) ) )
 
          # 'C-x' (Ctrl-x) keymap
          ("^x" (and (key 500)
@@ -454,30 +409,14 @@
                            (setq "UndoLine" "L" "UndoPos" "P") ) )
                      # list directory files
                      ("^d" (printsp (dir (pwd))) (prinl) (quit))
-                     # dired-style directory listing (ls -l)
-                     ("d" (call 'ls "-l") (quit))
-                     # find file (with EMACSCLIENT)
-                     ("^f"
-                      (prog
-                        (prinl "[(pwd) " (pwd) "]")
-                        (prin "(emacsclient -c) ")
-                        (call 'emacsclient "-c" (line T)) (quit) ) )
                      # find-file (with ZILE)
                      ("f"
-                      (prog
+                      (use X
                         (prinl "[(pwd) " (pwd) "]")
                         (prin "(zile) ")
-                        (call 'zile (line T)) (quit) ) )
-                     # return (a list with) the number of lines of file(s)
-                     ("l"
-                        (prinl "[(pwd) " (pwd) "]")
-                        (prin "(lines) ")
-                        (println
-                           (mapcar lines
-                              (mapcar pack
-                                 (split (chop (line T)) " ") ) ) )
-                           (quit) )
-
+                        (call 'zile (read)) (quit) ) )
+                     # edit file (with EMACSCLIENT)
+                     ## ("^f" (edit ) )
  ) ) )
                         ## (case @
                         ##    ((call 'test "-f" X)
@@ -495,36 +434,12 @@
                         ##                (out (basename X)) ) ) ) ) ) ) ) ) ) )
 
          # 'C-h' (Ctrl-h) keymap (info/help functionality)
-         ("^h" (and (key 1000)
+         ("^h" (and (key 500)
                   (case @
-                    # current contents of kill-ring (cut buffer)
-                    ("r" (prinl) (println "Clip")(quit))
-                    # info
-                    ("i" (prin "(info) ")
-                       (let Info (info (any (line T)))
-                          (printsp 
-                             (car Info)
-                             (stamp (cadr Info) (cddr Info)) ) )
-                          (prinl) (quit) )
-                    # doc 
-                    ("f" (prin "(doc) ")
-                       (doc (line T)) (quit) )
-                    # show
-                    ("s" (prin "(show) ")
-                       (pp (show (any (line T)))) (quit) )
-                    # debug
-                    ("d" (prin "(debug) ")
-                       (debug (any (line T))) (quit) )
-                    # pretty print
-                    ("p" (and (key 500)
-                             (case @
-                                # (pp)
-                                ("p" (prin "(pp) ")
-                                   (pp (any (line T))) (quit) )
-                                # (pretty)
-                                ("r" (prin "(pretty) ")
-                                   (pretty (any (line T)))
-                                   (prinl) (quit) ) ) ) ) ) ) )
+                     # display current contents of
+                     # kill-ring (cut buffer)
+                    ("r" (prinl) (println "Clip")) ) ) )
+
          # 'C-v' (Ctrl-v) keymap
          ## ("^v" (and (key 500)
          ##          (case @
@@ -545,25 +460,20 @@
          # backward-char
          ("^b" (lMove))
          # forward-char
-         ("^f" (and (= "LPos" (length "Line")))(rMove T))
+         ("^f" (and (= "LPos" (length "Line"))(xMove))(rMove))
          # next-line
-         ("^n" (dMove))
+         ("^n" (unless (=0 "HPos") (setHist (dec "HPos"))))
          # previous-line
-         ("^p" (uMove))
+         ("^p" (when (< "HPos" (length "History")) (setHist (inc "HPos"))))
          # yank
          ("^y" (doUndo) (doPaste))
          # delete-char
-         ("^d" (doUndo) (delChar))
-         # clear-screen
-         ("^l" (call 'tput 'clear) (quit))
+         ("^D" (doUndo) (delChar))
          # self-insertion
          (T
             (when (= "C" ")")
                (chgLine "Line" (prog1 "LPos" (lPar) (wait 200))) )
             (insChar  "C") ) ) ) )
-
-#### TODO: delete, once all functionality ####
-#### has been transferred to Insert Mode ####
 
 # Command mode
 ## (de cmdMode ("C")
@@ -584,7 +494,7 @@
 ## (off "Insert") ) ) )
 ## ("0" (bMove))
 ## ("A" (doUndo) (xMove) (on "Insert"))
-## ("a" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove T)) (on "Insert"))
+## ("a" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove)) (on "Insert"))
 ## ("b" (lWord))
 ## ("c" (doUndo) (delWord NIL) (on "Insert"))
 ## ("C" (doUndo) (clrEol) (xMove) (on "Insert"))
@@ -599,10 +509,10 @@
 ## ("I" (doUndo) (bMove) (on "Insert"))
 ## ("j" (unless (=0 "HPos") (setHist (dec "HPos"))))
 ## ("k" (when (< "HPos" (length "History")) (setHist (inc "HPos"))))
-## ("l" (rMove T))
+## ("l" (rMove))
 ## ("n" (ledSearch "Line"))
 ## ("N" (if "Found" (setHist (pop '"Found")) (beep)))
-## ("p" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove T)) (doPaste))
+## ("p" (doUndo) ((if (= "LPos" (length "Line")) xMove rMove)) (doPaste))
 ## ("P" (doUndo) (doPaste))
 ## ("r" (ifn "Line" (beep) (doUndo) (rplChar (key))))
 ## ("s" (doUndo) (delChar) (on "Insert"))
@@ -619,7 +529,7 @@
 ## (doUndo)
 ## (rplChar
 ## ((if (low? (setq "C" (get "Line" "LPos"))) uppc lowc) "C") )
-## (rMove T) )
+## (rMove) )
 ## (T (beep)) ) )
 
 # Get a line from console
@@ -655,7 +565,7 @@
    (default "tabFun"
       '((S)
          (conc
-            (filter '((X) (pre? S X)) (all))
+            (filter '((X) (pre? S (sym X))) (all))
             (let P (rot (split (chop S) "/"))
                (setq
                   S (pack (car P))
@@ -701,10 +611,20 @@
          (and (nth "History" "HistMax") (con @))
          L ) ) )
 
+### new Key codes (additional to lib/term.l) ###
+## (setq
+## *XtMf (in '("tput" "\033") (line T))
+## *XtMb (in '("tput" "\b") (line T))
+## *XtMd (in '("tput" "\d") (line T)) )
+
+## (fkey *XtMf (rWord))
+## (fkey *XtMb (lWord))
+## (fkey *XtMd (doUndo) (delWord T))
+
 (mapc zap
    (quote
-      chgLine skipQ escQ delim? lMove bMove rMove eMove xMove uMove dMove lWord
-      rWord lPar rPar clrEol insChar del1 delChar delWord rplChar doUndo doPaste
-      setHist ledSearch expandTab insMode cmdMode _getLine _led saveHistory ) )
+      chgLine skipQ escQ delim? lMove bMove rMove eMove xMove lWord rWord lPar rPar
+      clrEol insChar del1 delChar delWord rplChar doUndo doPaste
+      setHist ledSearch expandTab insMode _getLine _led saveHistory ) )
 
 # vi:et:ts=3:sw=3

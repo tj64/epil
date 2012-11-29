@@ -1,5 +1,5 @@
-# 29nov12tj
-# Authors Thorsten Jolitz, Alexander Burger
+# 19nov12tj
+# Authors Alexander Burger, Thorsten Jolitz
 # (c) Software Lab. Alexander Burger
 
 # Line editor

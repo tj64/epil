@@ -1,5 +1,4 @@
-# 29nov12tj
-# Authors Alexander Burger, Thorsten Jolitz
+# 29nov12abu
 # (c) Software Lab. Alexander Burger
 
 # Prompt
@@ -202,30 +201,39 @@
          (path (cdr "*Ed")) ) ) )
 
 # Emacs users:
-# as you set 'tags-table-list' here, do not also set `tags-file-name'.
+# as you set 'tags-table-list' here, do not also set `tags-file-name'. 
+# If you want white background-color on graphical displays: 
+# outcomment section between 'start' and 'end' background-color
 (de em ("X" C)
    (_ed
       '("@lib/eled.l" "@lib/eedit.l")
-         (call "emacsclient"
-            "-e"
-            (pack
-               "(let ("
-               "(tmp-tags " (pack "\"" (tmp "tags") "\"") ")"
-               "(src-tags (expand-file-name "
-                (pack "\"" (path "@src64/tags") "\"") ")))"
-               "(setq tags-table-list "
-               "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
-               "(mapc (lambda (F)"
-               "(unless (file-exists-p (expand-file-name F))"
-               "(setq tags-table-list (delete F tags-table-list))))"
-               "tags-table-list)"
-               "(delete-dups tags-table-list)"
-               "(setq tags-table-list (delete \"\" tags-table-list))"
-               "(setq tags-file-name nil))" ) )
-         (call "emacsclient"
-         "-c"
-         (pack "+" (car "*Ed"))
-         (path (cdr "*Ed")) ) ) )
+      (call "emacsclient"
+         "-e"
+         (pack
+            "(let ("
+            "(tmp-tags " (pack "\"" (tmp "tags") "\"") ")"
+            "(src-tags (expand-file-name "
+             (pack "\"" (path "@src64/tags") "\"" ) "))"
+            "(edit-file " (pack "\"" (path (cdr "*Ed")) "\"")  ")"
+            "(line " (car "*Ed") "))"            
+            "(setq tags-table-list "
+            "(append `(,tmp-tags) `(,src-tags) tags-table-list))"
+            "(mapc (lambda (F)"
+            "(unless (file-exists-p (expand-file-name F))"
+            "(setq tags-table-list (delete F tags-table-list))))"
+            "tags-table-list)"
+            "(delete-dups tags-table-list)"
+            "(setq tags-table-list (delete \"\" tags-table-list))"
+            "(setq tags-file-name nil)"
+            "(message \"file: %S line: %S\" edit-file line)"
+            "(find-file-other-frame edit-file)"
+            # start background-color for X11
+            "(if (display-graphic-p)"
+            "(progn "
+            "(set-background-color \"black\")"
+            "(set-foreground-color \"wheat\")))"
+            # end background-color for X11
+            "(goto-line line))" ) ) ) )
 
 (de ld ()
    (and "*Ed" (load (cdr "*Ed"))) )
@@ -403,3 +411,4 @@
                " sec" ) ) ) ) )
 
 # vi:et:ts=3:sw=3
+

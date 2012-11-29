@@ -1,5 +1,4 @@
-# 29nov12tj
-# Authors Alexander Burger, Thorsten Joltiz
+# 12nov12abu
 # (c) Software Lab. Alexander Burger
 
 # "*F" "*Lst" "*X" "*K"
@@ -150,3 +149,16 @@ only one symbol is left exits the 'edit' buffer.
          (push '"Lst" "X")
          ("loc" (car "X") "Lst")
          ("loc" (cdr "X") "Lst") ) ) )
+
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
+(0)
