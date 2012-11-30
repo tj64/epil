@@ -22,8 +22,9 @@
    "Found"     NIL      # Find stack
    "Complete"  NIL      # Input completion
    "Mark"      NIL      # Position of the mark
+   "Region"    NIL      # Start-End of region 
    "Register"  NIL      # Storage for text snippets
-
+   "Mso"       NIL      # Standout-mode signals for console
    "HistMax"   1000     # History limit
 
    "History"            # History of input lines
@@ -43,13 +44,22 @@
 # terminal settings. This can be done with
 #
 #    $ stty intr ^A
-p#
+#
 # or, from inside PicoLisp
 #
 #    (call 'stty "intr" "^A")
 
 (raw T)
 (call 'stty "intr" "^R")  # ^R as replacement for ^C 
+
+
+# Signals to start and end 'standout' console mode 
+(when (sys "TERM")
+   (setq "Mso"
+      (cons
+         (in '("tput" "smso") (line T))
+         (in '("tput" "rmso") (line T)) ) ) )
+
 
 # Basic editing routine
 (de chgLine (L N)
@@ -107,6 +117,32 @@ p#
 # Check for delimiter
 (de delim? (C)
    (member C '`(chop '" ^I^J^M\"'()[]`~-")) )  # dash added for emacs-style
+
+# Set mark
+(de setMark ()
+   (setq "Mark" "LPos") )
+
+# Set region
+(de setRegion ()
+   (and "Mark"
+      (unless (= "Mark" "LPos")
+         (setq "Region"        
+            (cons
+               (min "Mark" "LPos")
+               (max "Mark" "LPos") ) ) ) ) )
+
+# TODO Get region
+# return text of active region or NIL
+# (de getRegion () ...)
+         
+# Copy to register
+(de copyReg )
+   (and "Region"
+      (put "Register" (any K) (getRegion)) ) )
+
+# Insert Register
+(de insReg (K)
+   (get "Register" (any K)) )
 
 # Move left
 (de lMove ()
@@ -384,7 +420,8 @@ p#
                      ("^d" (prinl (pwd)) (quit))
                      # delete sexp
                      ("^k" (delSexp))
-                     # goto/find ch                     ("g"
+                     # goto/find ch
+                     ("g"
                         (ifn (setq "C" (index (key) (nth "Line" (inc "LPos"))))
                            (beep)
                            (chgLine "Line" (+ "C" "LPos")) ) )
@@ -536,7 +573,7 @@ p#
                   (chgLine "UndoLine" "UndoPos")
                   (setq "UndoLine" "L" "UndoPos" "P") ) )
          # move-end-of-line
-         ("^e" (eMove))
+         ("^e" (eMove) (xMove))
          # move-beginning-of-line
          ("^a" (bMove))
          # kill-line
@@ -555,6 +592,8 @@ p#
          ("^d" (doUndo) (delChar))
          # clear-screen
          ("^l" (call 'tput 'clear) (quit))
+         # set mark
+         ("^ " (setMark))
          # self-insertion
          (T
             (when (= "C" ")")
