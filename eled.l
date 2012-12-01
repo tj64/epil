@@ -374,6 +374,7 @@
       (expandTab)
       (off "Complete")
       (case "C"
+         ~*EmacsKeyHook
          ("^?"
             (when (> "LPos" 1)
                (chgLine (remove (dec "LPos") "Line") (dec "LPos")) ) )
@@ -738,6 +739,10 @@
             (push '"History" L) )
          (and (nth "History" "HistMax") (con @))
          L ) ) )
+
+(de EmacsHook Prg
+	(let (_Line "Line" _chgLine chgLine)
+		(eval (car Prg ))) )
 
 (mapc zap
    (quote
