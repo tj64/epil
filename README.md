@@ -177,6 +177,34 @@ listed below.
     | interrupt program execution | C-r          |
 
 
+# Custom Key Bindings
+
+Custom key bindings can be added through a hook that is executed whenever a key is pressed.
+
+There are two symbols used when creating a hook.
+
+*EmacsKeyHook is a global variable that holds the list of keys and the fexpr to be invoked when the key is hit.
+
+EmacsHook is a function defined in eled.l that wraps the transient symbols of the current Line "Line" into _Line and the chgLine function into _chgLine. The preceding underscore is used to prevent collisions with the transient. 
+
+For example,  
+
+If you have a file called init.l with the following
+
+	(de closeParens (Line)
+		(let (Open (length (sect Line (list "(" ))) 
+					Close (length (sect Line (list ")" ))))
+			(make 
+				(for X Line (link X))
+				(for X (- Open Close) (link ")")))))
+
+	(setq *EmacsKeyHook '(("^o" (EmacsHook (let L (closeParens _Line) (_chgLine L (length L)))))))
+
+
+And if you invoke pil with
+	./pil init.l -em +
+
+You will then have a key binding that automatically closes open parentheses when c-o is hit.
 
 
 ### Notes: ###
