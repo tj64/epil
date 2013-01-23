@@ -1,7 +1,7 @@
 # close all open parenthesis (from Joe Bogner)
 (de closeParens (Line)
-    (let (Open (length (sect Line (list "(" ))) 
-                Close (length (sect Line (list ")" ))) )
+    (let (Open (length (sect Line (list "(" )))
+          Close (length (sect Line (list ")"))) )
         (make 
             (for X Line (link X))
             (for X (- Open Close) (link ")")) ) ) )

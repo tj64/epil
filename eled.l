@@ -578,7 +578,7 @@
          # move-beginning-of-line
          ("^a" (bMove))
          # kill-line
-         ("^k" (doUndo) (clrEol))
+         ("^k" (doUndo) (clrEol) (rMove T))
          # backward-char
          ("^b" (lMove))
          # forward-char
